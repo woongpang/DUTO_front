@@ -1,9 +1,9 @@
-console.log("상세게시글 js 로드됨")  
+console.log("상세게시글 js 로드됨")
 
 let postId
 
-async function loadComments(postId, commentId){
-    const response = await getComments(postId, commentId);
+async function loadComments(postId) {
+    const response = await getComments(postId);
     console.log(response)
 
     const commentsList = document.getElementById("comments-list")
@@ -19,11 +19,8 @@ async function loadComments(postId, commentId){
             <span class="mt-1 mb-1 ms-1 me-1">${comment.comment}</span>
         </div>
         <div class="col d-grid gap-2 d-md-flex justify-content-end p-2">
-            <button type="button" class="btn btn-primary" onclick="removeComment()">삭제</button>
+            <button type="button" class="btn btn-primary" onclick="deleteComment(${postId}, ${comment.id})">삭제</button>
         </div>
-        </li>
-        <li>
-
         </li>
         `
 
@@ -31,24 +28,20 @@ async function loadComments(postId, commentId){
 
 }
 
-async function submitComment(){
+// 댓글 등록
+async function submitComment() {
     const commentElement = document.getElementById("new-comment")
     const newComment = commentElement.value
-    const response = await postComment(postId, newComment)
+    console.log(`댓글 내용: ${newComment}`)
+    const response = await createComment(postId, newComment)
     console.log(response)
     commentElement.value = ""
 
     loadComments(postId)
 }
 
-async function removeComment(postId, commentId) {
-    const response = await deleteComment(postId, commentId);
-    console.log(response);
 
-    loadComments(postId);
-}
-
-async function loadPosts(){
+async function loadPosts() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
     console.log(postId)
@@ -76,12 +69,12 @@ async function loadPosts(){
 
 }
 
-window.onload = async function (){
+window.onload = async function () {
     const urlParams = new URLSearchParams(window.location.search);
     postId = urlParams.get("post_id");
-    commentId = urlParams.get("comment_id");
+    // commentId = urlParams.get("comment_id");
     console.log(postId)
-    console.log(commentId)
+    // console.log(commentId)
 
     await loadPosts(postId);
     await loadComments(postId);

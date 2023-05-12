@@ -126,15 +126,11 @@ async function getFollowingPosts(categoryName) {
 async function createPost(url) {
     const urlParams = new URLSearchParams(url);
     const category = urlParams.get("category");
-    const title = document.getElementById("title").value
-    const content = document.getElementById("content").value
-    const image = document.getElementById("image").files[0]
-    const star = document.getElementById("star").value
-    console.log(category)
-    console.log(title)
-    console.log(content)
-    console.log(image)
-    console.log(star)
+    const title = document.getElementById("title").value;
+    const content = document.getElementById("content").value;
+    const image = document.getElementById("image").files[0];
+    const star = document.getElementById("star").getAttribute("value");
+
 
     const formdata = new FormData();
 
@@ -186,8 +182,8 @@ async function getComments(postId) {
     }
 }
 
-//댓글 작성
-async function postComment(postId, newComment) {
+// 등록된 댓글 DB에 저장
+async function createComment(postId, newComment) {
 
     let token = localStorage.getItem("access")
 
@@ -207,31 +203,33 @@ async function postComment(postId, newComment) {
         response_json = await response.json()
         return response_json
     } else {
-        alert(response.status)
+        alert(response.statusText)
     }
 }
 
 //댓글 삭제
 async function deleteComment(postId, commentId) {
+    if (confirm("정말 삭제하시겠습니까?")) {
+        let token = localStorage.getItem("access")
 
-    let token = localStorage.getItem("access")
-
-    const response = await fetch(`${backend_base_url}/posts/${postId}/comments/${commentId}`, {
-        method: 'DELETE',
-        headers: {
-            'content-type': 'application/json',
-            "Authorization": `Bearer ${token}`
-        }, 
-        body: JSON.stringify({
-            "id": commentId,
+        const response = await fetch(`${backend_base_url}/posts/${postId}/comments/${commentId}/`, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json',
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                "id": commentId,
+            })
         })
-    }
-    )
 
-    if (response.status == 204) {
-        response_json = await response.json()
-        return response_json
+        if (response.status == 204) {
+            alert("댓글 삭제 완료!")
+            loadComments(postId);
+        } else {
+            alert(response.statusText)
+        }
     } else {
-        alert(response.statusText)
+        loadComments(postId);
     }
 }
