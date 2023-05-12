@@ -21,18 +21,6 @@ async function injectNavbar() {
         const intro = document.getElementById("intro")
         intro.innerText = `${payload_parse.name}님 안녕하세요!`
 
-        let navbarLeft = document.getElementById("navbar-left")
-        let postLi = document.createElement("li")
-        postLi.setAttribute("class", "nav-item")
-
-        let postLink = document.createElement("a")
-        postLink.setAttribute("href", "/posts/post_create.html")
-        postLink.setAttribute("class", "nav-link")
-        postLink.innerHTML = "글쓰기"
-
-        postLi.appendChild(postLink)
-        navbarLeft.appendChild(postLi)
-
         let navbarRight = document.getElementById("navbar-right")
         let newLi = document.createElement("li")
         newLi.setAttribute("class", "nav-item")
@@ -66,4 +54,15 @@ function clickFollowingPosts(category_name) {
 // url에 게시글 pk값을 담기 위한 작업
 function postDetail(post_id) {
     window.location.href = `${frontend_base_url}/posts/post_detail.html?post_id=${post_id}`
+}
+
+function handlePostButton(url) {
+    const urlParams = new URLSearchParams(url);
+    const postCategory = urlParams.get("category");
+    if (postCategory == "study") {
+        category_pk = 1
+    } else if (postCategory == "rest") {
+        category_pk = 2
+    }
+    window.location.href = `${frontend_base_url}/posts/post_create.html?category=${category_pk}`
 }

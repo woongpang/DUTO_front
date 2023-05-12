@@ -123,16 +123,26 @@ async function getFollowingPosts(categoryName) {
 }
 
 // 게시글 작성
-async function createPost() {
+async function createPost(url) {
+    const urlParams = new URLSearchParams(url);
+    const category = urlParams.get("category");
     const title = document.getElementById("title").value
     const content = document.getElementById("content").value
     const image = document.getElementById("image").files[0]
+    const star = document.getElementById("star").value
+    console.log(category)
+    console.log(title)
+    console.log(content)
+    console.log(image)
+    console.log(star)
 
     const formdata = new FormData();
 
+    formdata.append("category", category)
     formdata.append("title", title)
     formdata.append("content", content)
     formdata.append("image", image || '') // 이미지 안 올리면 폼데이터에 ''로 들어가게 함(이렇게 안 하면 undefined가 들어가서 400에러뜸)
+    formdata.append("star", star)
 
     let token = localStorage.getItem("access")
 
@@ -144,7 +154,7 @@ async function createPost() {
         body: formdata
     })
 
-    if (response.status == 201) {
+    if (response.status == 200) {
         alert("글 작성 완료!")
         window.location.replace(`${frontend_base_url}/`);
     } else {
