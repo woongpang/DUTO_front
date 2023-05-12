@@ -1,0 +1,30 @@
+.box1 {
+    border:5px ridge;
+    float: left;
+    background-color: aquamarine;
+    width: 450px;
+    height: 800px;
+    
+}
+
+.box2 {
+    border:5px ridge;
+    float: left;
+    background-color: rgb(238, 151, 180);
+    width: 1000px;
+    height: 400px;
+    
+}
+
+.box3 {
+    border:5px ridge;
+    float: left;
+    width: 1000px;
+    background-color: rgb(238, 151, 180);
+    height: 400px;
+    
+}
+
+.div-one{
+    margin-left: 7%;
+}
