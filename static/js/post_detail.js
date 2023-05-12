@@ -19,6 +19,7 @@ async function loadComments(postId) {
             <span class="mt-1 mb-1 ms-1 me-1">${comment.comment}</span>
         </div>
         <div class="col d-grid gap-2 d-md-flex justify-content-end p-2">
+            <button type="button" class="btn btn-primary" onclick="modifyComment(${postId}, ${comment.id})">수정</button>
             <button type="button" class="btn btn-primary" onclick="deleteComment(${postId}, ${comment.id})">삭제</button>
         </div>
         </li>
@@ -27,6 +28,7 @@ async function loadComments(postId) {
     });
 
 }
+
 
 // 댓글 등록
 async function submitComment() {

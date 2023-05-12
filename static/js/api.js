@@ -207,6 +207,35 @@ async function createComment(postId, newComment) {
     }
 }
 
+// 댓글 수정
+async function modifyComment(postId, commentId) {
+    let newComment = prompt("수정할 댓글을 입력하세요."); // 수행할 댓글 수정 내용을 입력 받습니다.
+
+    if (newComment !== null) { // 수정 내용이 null 이 아닌 경우
+        let token = localStorage.getItem("access");
+
+        const response = await fetch(`${backend_base_url}/posts/${postId}/comments/${commentId}/`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                "comment": newComment
+            })
+        });
+
+        if (response.status == 200) {
+            alert("댓글 수정이 완료되었습니다!");
+            loadComments(postId); // 댓글 목록을 다시 로드합니다.
+        } else {
+            alert(response.statusText);
+        }
+    } else { // 수정 내용이 null 인 경우
+        loadComments(postId);
+    }
+}
+
 //댓글 삭제
 async function deleteComment(postId, commentId) {
     if (confirm("정말 삭제하시겠습니까?")) {
@@ -233,3 +262,4 @@ async function deleteComment(postId, commentId) {
         loadComments(postId);
     }
 }
+
