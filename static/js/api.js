@@ -126,15 +126,11 @@ async function getFollowingPosts(categoryName) {
 async function createPost(url) {
     const urlParams = new URLSearchParams(url);
     const category = urlParams.get("category");
-    const title = document.getElementById("title").value
-    const content = document.getElementById("content").value
-    const image = document.getElementById("image").files[0]
-    const star = document.getElementById("star").value
-    console.log(category)
-    console.log(title)
-    console.log(content)
-    console.log(image)
-    console.log(star)
+    const title = document.getElementById("title").value;
+    const content = document.getElementById("content").value;
+    const image = document.getElementById("image").files[0];
+    const star = document.getElementById("star").getAttribute("value");
+
 
     const formdata = new FormData();
 
@@ -221,7 +217,7 @@ async function deleteComment(postId, commentId) {
         headers: {
             'content-type': 'application/json',
             "Authorization": `Bearer ${token}`
-        }, 
+        },
         body: JSON.stringify({
             "id": commentId,
         })

@@ -1,10 +1,13 @@
-console.log("상세게시글 js 로드됨")  
+console.log("상세게시글 js 로드됨")
 
 let postId
 
-async function loadComments(postId, commentId){
+async function loadComments(postId, commentId) {
     const response = await getComments(postId, commentId);
     console.log(response)
+
+    const commentId = response.pk
+    console.log(commentId)
 
     const commentsList = document.getElementById("comments-list")
     commentsList.innerHTML = ""
@@ -31,9 +34,10 @@ async function loadComments(postId, commentId){
 
 }
 
-async function submitComment(){
+async function submitComment() {
     const commentElement = document.getElementById("new-comment")
     const newComment = commentElement.value
+    console.log(newComment)
     const response = await postComment(postId, newComment)
     console.log(response)
     commentElement.value = ""
@@ -48,7 +52,7 @@ async function removeComment(postId, commentId) {
     loadComments(postId);
 }
 
-async function loadPosts(){
+async function loadPosts() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
     console.log(postId)
@@ -76,7 +80,7 @@ async function loadPosts(){
 
 }
 
-window.onload = async function (){
+window.onload = async function () {
     const urlParams = new URLSearchParams(window.location.search);
     postId = urlParams.get("post_id");
     commentId = urlParams.get("comment_id");
