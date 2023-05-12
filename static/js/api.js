@@ -89,9 +89,29 @@ function checkNotLogin() {
     }
 }
 
-// 카테고리별 게시글 조회
+// 카테고리별 전체 게시글 조회
 async function getPosts(categoryName) {
     const response = await fetch(`${backend_base_url}/posts/category/${categoryName}/`)
+    console.log(response)
+
+    if (response.status == 200) {
+        const response_json = await response.json()
+        return response_json
+    } else {
+        alert("불러오는 데 실패했습니다")
+    }
+}
+
+// 카테고리별 팔로잉 게시글 조회
+async function getFollowingPosts(categoryName) {
+    let token = localStorage.getItem("access")
+
+    const response = await fetch(`${backend_base_url}/posts/category/${categoryName}/followings/`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
+    })
     console.log(response)
 
     if (response.status == 200) {
@@ -166,7 +186,7 @@ async function postComment(postId, newComment) {
         headers: {
             'content-type': 'application/json',
             "Authorization": `Bearer ${token}`
-        }, 
+        },
         body: JSON.stringify({
             "comment": newComment,
         })

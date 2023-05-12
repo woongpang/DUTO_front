@@ -53,11 +53,14 @@ async function injectNavbar() {
 
 injectNavbar();
 
-// 공부 or 휴식 게시판 클릭 시 html에 있는 카테고리 이름을 가져와서 url에 카테고리명을 담음
-function handleClickCategory(category_name) {
-    const categoryName = category_name
-    console.log(categoryName)
-    window.location.href = `${frontend_base_url}/posts/post_list.html?category=${categoryName}`
+// 공부 or 휴식 게시판 전체 게시글 보기 클릭 시 html에 있는 카테고리 이름을 가져와서 url에 카테고리명을 담아서 그 url로 이동시킴
+function clickCategory(category_name) {
+    window.location.href = `${frontend_base_url}/posts/post_list.html?category=${category_name}`
+}
+
+// 공부 or 휴식 게시판 팔로잉 게시글 보기 클릭 시 html에 있는 카테고리 이름을 가져와서 url에 카테고리명을 담아서 그 url로 이동시킴
+function clickFollowingPosts(category_name) {
+    window.location.href = `${frontend_base_url}/posts/post_list.html?category=${category_name}&q=followings`
 }
 
 // url에 게시글 pk값을 담기 위한 작업
