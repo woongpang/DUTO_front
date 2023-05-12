@@ -27,7 +27,7 @@ async function handleSignin() {
             "password2": passwordCheck,
             "email": email,
             "name": realname || '',
-            "age": age || '',
+            "age": age || 7,
             "introduction": introduction || '',
         })
     })

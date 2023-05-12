@@ -6,9 +6,9 @@ window.onload = async function loadPosts() {
     // url에서 카테고리 이름을 가져옴
     const urlParams = new URLSearchParams(window.location.search);
     const categoryName = urlParams.get("category");
-    console.log(categoryName)
 
     // 카테고리 이름을 매개변수로 백엔드에서 해당 카테고리의 글들을 가져옴
+    console.log(categoryName)
     posts = await getPosts(categoryName)
     console.log(posts)
 
