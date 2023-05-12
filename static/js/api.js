@@ -27,7 +27,7 @@ async function handleSignin() {
             "password2": passwordCheck,
             "email": email,
             "name": realname || '',
-            "age": age || '',
+            "age": age || 7,
             "introduction": introduction || '',
         })
     })
@@ -89,7 +89,7 @@ function checkNotLogin() {
     }
 }
 
-// 카테고리별 게시글 조회
+// 카테고리별 전체 게시글 조회
 async function getPosts(categoryName) {
     const response = await fetch(`${backend_base_url}/posts/category/${categoryName}/`)
     console.log(response)
@@ -102,17 +102,43 @@ async function getPosts(categoryName) {
     }
 }
 
+// 카테고리별 팔로잉 게시글 조회
+async function getFollowingPosts(categoryName) {
+    let token = localStorage.getItem("access")
+
+    const response = await fetch(`${backend_base_url}/posts/category/${categoryName}/followings/`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
+    })
+    console.log(response)
+
+    if (response.status == 200) {
+        const response_json = await response.json()
+        return response_json
+    } else {
+        alert("불러오는 데 실패했습니다")
+    }
+}
+
 // 게시글 작성
-async function createPost() {
-    const title = document.getElementById("title").value
-    const content = document.getElementById("content").value
-    const image = document.getElementById("image").files[0]
+async function createPost(url) {
+    const urlParams = new URLSearchParams(url);
+    const category = urlParams.get("category");
+    const title = document.getElementById("title").value;
+    const content = document.getElementById("content").value;
+    const image = document.getElementById("image").files[0];
+    const star = document.getElementById("star").getAttribute("value");
+
 
     const formdata = new FormData();
 
+    formdata.append("category", category)
     formdata.append("title", title)
     formdata.append("content", content)
     formdata.append("image", image || '') // 이미지 안 올리면 폼데이터에 ''로 들어가게 함(이렇게 안 하면 undefined가 들어가서 400에러뜸)
+    formdata.append("star", star)
 
     let token = localStorage.getItem("access")
 
@@ -124,7 +150,7 @@ async function createPost() {
         body: formdata
     })
 
-    if (response.status == 201) {
+    if (response.status == 200) {
         alert("글 작성 완료!")
         window.location.replace(`${frontend_base_url}/`);
     } else {
@@ -144,4 +170,66 @@ async function getPost(postId) {
     }
 }
 
-// 유저 정보 조회 
+// 댓글 조회
+async function getComments(postId) {
+    const response = await fetch(`${backend_base_url}/posts/${postId}/comments/`,)
+
+    if (response.status == 200) {
+        response_json = await response.json()
+        return response_json
+    } else {
+        alert(response.statusText)
+    }
+}
+
+// 등록된 댓글 DB에 저장
+async function createComment(postId, newComment) {
+
+    let token = localStorage.getItem("access")
+
+    const response = await fetch(`${backend_base_url}/posts/${postId}/comments/`, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            "comment": newComment,
+        })
+    }
+    )
+
+    if (response.status == 200) {
+        response_json = await response.json()
+        return response_json
+    } else {
+        alert(response.statusText)
+    }
+}
+
+//댓글 삭제
+async function deleteComment(postId, commentId) {
+    if (confirm("정말 삭제하시겠습니까?")) {
+        let token = localStorage.getItem("access")
+
+        const response = await fetch(`${backend_base_url}/posts/${postId}/comments/${commentId}/`, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json',
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                "id": commentId,
+            })
+        })
+
+        if (response.status == 204) {
+            alert("댓글 삭제 완료!")
+            loadComments(postId);
+        } else {
+            alert(response.statusText)
+        }
+    } else {
+        loadComments(postId);
+    }
+}

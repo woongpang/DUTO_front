@@ -1,6 +1,47 @@
 console.log("상세게시글 js 로드됨")
 
-window.onload = async function () {
+let postId
+
+async function loadComments(postId) {
+    const response = await getComments(postId);
+    console.log(response)
+
+    const commentsList = document.getElementById("comments-list")
+    commentsList.innerHTML = ""
+
+    response.forEach(comment => {
+
+        commentsList.innerHTML += `
+        <li class="media d-flex mt-2 mb-2 mr-2 border border-dark">
+        <img class="img-thumbnail" src="https://img.freepik.com/free-photo/cute-ai-generated-cartoon-bunny_23-2150288879.jpg" alt="profile img" width="50" height"50">
+        <div class="media-body">
+            <h6 class="mt-1 mb-1 ms-1 me-1">${comment.user}</h6>
+            <span class="mt-1 mb-1 ms-1 me-1">${comment.comment}</span>
+        </div>
+        <div class="col d-grid gap-2 d-md-flex justify-content-end p-2">
+            <button type="button" class="btn btn-primary" onclick="deleteComment(${postId}, ${comment.id})">삭제</button>
+        </div>
+        </li>
+        `
+
+    });
+
+}
+
+// 댓글 등록
+async function submitComment() {
+    const commentElement = document.getElementById("new-comment")
+    const newComment = commentElement.value
+    console.log(`댓글 내용: ${newComment}`)
+    const response = await createComment(postId, newComment)
+    console.log(response)
+    commentElement.value = ""
+
+    loadComments(postId)
+}
+
+
+async function loadPosts() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
     console.log(postId)
@@ -25,4 +66,16 @@ window.onload = async function () {
 
     postImage.appendChild(newImage)
 
+
+}
+
+window.onload = async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    postId = urlParams.get("post_id");
+    // commentId = urlParams.get("comment_id");
+    console.log(postId)
+    // console.log(commentId)
+
+    await loadPosts(postId);
+    await loadComments(postId);
 }
