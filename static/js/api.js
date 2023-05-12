@@ -144,4 +144,39 @@ async function getPost(postId) {
     }
 }
 
-// 유저 정보 조회 
+// 댓글 조회
+async function getComments(postId) {
+    const response = await fetch(`${backend_base_url}/posts/${postId}/comments/`,)
+
+    if (response.status == 200) {
+        response_json = await response.json()
+        return response_json
+    } else {
+        alert(response.statusText)
+    }
+}
+
+//댓글 작성
+async function postComment(postId, newComment) {
+
+    let token = localStorage.getItem("access")
+
+    const response = await fetch(`${backend_base_url}/posts/${postId}/comments/`, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        }, 
+        body: JSON.stringify({
+            "comment": newComment,
+        })
+    }
+    )
+
+    if (response.status == 200) {
+        response_json = await response.json()
+        return response_json
+    } else {
+        alert(response.status)
+    }
+}

@@ -1,6 +1,41 @@
-console.log("상세게시글 js 로드됨")
+console.log("상세게시글 js 로드됨")  
 
-window.onload = async function () {
+let postId
+
+async function loadComments(postId){
+    const response = await getComments(postId);
+    console.log(response)
+
+    const commentsList = document.getElementById("comments-list")
+    commentsList.innerHTML = ""
+
+    response.forEach(comment => {
+
+        commentsList.innerHTML += `
+        <li class="media d-flex">
+        <img class="mr-3" src="..." alt="profile img">
+        <div class="media-body">
+            <h5 class="mt-0 mb-1">${comment.user}</h5>
+            ${comment.comment}
+        </div>
+        </li>
+        `
+
+    });
+
+}
+
+async function submitComment(){
+    const commentElement = document.getElementById("new-comment")
+    const newComment = commentElement.value
+    const response = await postComment(postId, newComment)
+    console.log(response)
+    commentElement.value = ""
+
+    loadComments(postId)
+}
+
+async function loadPosts(){
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
     console.log(postId)
@@ -25,4 +60,14 @@ window.onload = async function () {
 
     postImage.appendChild(newImage)
 
+
+}
+
+window.onload = async function (){
+    const urlParams = new URLSearchParams(window.location.search);
+    postId = urlParams.get("post_id");
+    console.log(postId)
+
+    await loadPosts(postId);
+    await loadComments(postId);
 }
