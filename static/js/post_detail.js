@@ -40,11 +40,6 @@ async function submitComment() {
     loadComments(postId)
 }
 
-// async function removeComment(postId, commentId) {
-//     deleteComment(postId, commentId);
-
-//     // loadComments(postId);
-// }
 
 async function loadPosts() {
     const urlParams = new URLSearchParams(window.location.search);

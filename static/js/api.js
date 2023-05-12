@@ -225,9 +225,6 @@ async function deleteComment(postId, commentId) {
 
         if (response.status == 204) {
             alert("댓글 삭제 완료!")
-            // response_json = await response.json()
-            // return response_json
-            // window.location.replace(`${frontend_base_url}/posts/post_detail.html?post_id=${postId}`);
             loadComments(postId);
         } else {
             alert(response.statusText)

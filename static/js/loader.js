@@ -56,11 +56,7 @@ function postDetail(post_id) {
     window.location.href = `${frontend_base_url}/posts/post_detail.html?post_id=${post_id}`
 }
 
-// url에 댓글 pk값을 담기 위한 작업
-function commentDetail(post_id, comment_id) {
-    window.location.href = `${frontend_base_url}/posts/post_detail.html?post_id=${post_id}&comment_id=${comment_id}`
-}
-
+// 카테고리명을 pk값으로 바꿔주는 작업
 function handlePostButton(url) {
     const urlParams = new URLSearchParams(url);
     const postCategory = urlParams.get("category");
