@@ -180,3 +180,28 @@ async function postComment(postId, newComment) {
         alert(response.status)
     }
 }
+
+//댓글 삭제
+async function deleteComment(postId, commentId) {
+
+    let token = localStorage.getItem("access")
+
+    const response = await fetch(`${backend_base_url}/posts/${postId}/comments/${commentId}`, {
+        method: 'DELETE',
+        headers: {
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        }, 
+        body: JSON.stringify({
+            "id": commentId,
+        })
+    }
+    )
+
+    if (response.status == 204) {
+        response_json = await response.json()
+        return response_json
+    } else {
+        alert(response.statusText)
+    }
+}

@@ -2,8 +2,8 @@ console.log("상세게시글 js 로드됨")
 
 let postId
 
-async function loadComments(postId){
-    const response = await getComments(postId);
+async function loadComments(postId, commentId){
+    const response = await getComments(postId, commentId);
     console.log(response)
 
     const commentsList = document.getElementById("comments-list")
@@ -18,6 +18,12 @@ async function loadComments(postId){
             <h6 class="mt-1 mb-1 ms-1 me-1">${comment.user}</h6>
             <span class="mt-1 mb-1 ms-1 me-1">${comment.comment}</span>
         </div>
+        <div class="col d-grid gap-2 d-md-flex justify-content-end p-2">
+            <button type="button" class="btn btn-primary" onclick="removeComment()">삭제</button>
+        </div>
+        </li>
+        <li>
+
         </li>
         `
 
@@ -33,6 +39,13 @@ async function submitComment(){
     commentElement.value = ""
 
     loadComments(postId)
+}
+
+async function removeComment(postId, commentId) {
+    const response = await deleteComment(postId, commentId);
+    console.log(response);
+
+    loadComments(postId);
 }
 
 async function loadPosts(){
@@ -66,7 +79,9 @@ async function loadPosts(){
 window.onload = async function (){
     const urlParams = new URLSearchParams(window.location.search);
     postId = urlParams.get("post_id");
+    commentId = urlParams.get("comment_id");
     console.log(postId)
+    console.log(commentId)
 
     await loadPosts(postId);
     await loadComments(postId);
