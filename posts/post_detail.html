@@ -21,23 +21,26 @@
 
 <body>
     <header></header>
-    <div class="container text-center">
-        <h1 id="post-title" class="mb-3"></h1>
+    <div class="container text-center border border-dark">
+        <!-- <h5 id="post-title" class="mb-3"></h5> -->
         <div class="row row-cols-1 row-cols-md-2" id="post">
             <div id="post-image" class="col"></div>
-            <div id="post-content" class="col align-self-center"></div>
+            <div class="container">
+                <div id="post-title" class="mb-5 fs-5"></div>
+                <div id="post-content" class="col align-self-center"></div>
+            </div>
         </div>
     </div>
-    <div class="container">
+    <div class="container p-0">
         <ul class="list-unstyled" id="comments-list"></ul>
     </div>
-    <div class="container">
+    <div class="container p-0">
         <form>
-            <div class="row">
-                <div class="col-7">
+            <div class="row mt-5 mb-5 m-auto">
+                <div class="col-11 p-0">
                     <input type="text" id="new-comment" class="form-control" placeholder="please comment">
                 </div>
-                <div class="col">
+                <div class="col d-grid gap-2 d-md-flex justify-content-md-end p-0">
                     <button type="button" class="btn btn-primary" onclick="submitComment()">post</button>
                 </div>
             </div>
