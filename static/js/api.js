@@ -129,7 +129,7 @@ async function createPost(url) {
     const title = document.getElementById("title").value
     const content = document.getElementById("content").value
     const image = document.getElementById("image").files[0]
-    const star = document.getElementsByClassName("rating").value
+    const star = document.getElementById("star").value
     console.log(category)
     console.log(title)
     console.log(content)
