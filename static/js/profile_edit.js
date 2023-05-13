@@ -14,12 +14,6 @@ window.onload = async function() {
   const myprofile_response = await my_profile_edit.json()
   console.log(myprofile_response)
     
-    // const usernameedit = document.getElementById('username')
-    // const nameedit = document.getElementById('name')
-    // const ageedit = document.getElementById('age')
-    // const emailedit = document.getElementById('email')
-    // const introductionedit = document.getElementById('introduction')
-    
 
 };
 
