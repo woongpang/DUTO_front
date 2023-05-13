@@ -170,6 +170,15 @@ async function getPost(postId) {
     }
 }
 
+
+
+
+
+
+
+
+
+
 // 프로필 수정
 async function getUser() {
   try {

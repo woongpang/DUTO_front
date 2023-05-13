@@ -56,6 +56,14 @@ function postDetail(post_id) {
     window.location.href = `${frontend_base_url}/posts/post_detail.html?post_id=${post_id}`
 }
 
+function postUpdate(url) {
+    const urlParams = new URLSearchParams(url);
+    console.log(urlParams)
+    const post_id = urlParams.get("post_id");
+    console.log(post_id)
+    window.location.href = `${frontend_base_url}/posts/post_update.html?post_id=${post_id}`
+}
+
 // 카테고리명을 pk값으로 바꿔주는 작업
 function handlePostButton(url) {
     const urlParams = new URLSearchParams(url);
