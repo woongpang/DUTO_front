@@ -2,6 +2,8 @@ console.log("상세게시글 js 로드됨")
 
 let postId
 
+
+
 async function loadComments(postId) {
     const response = await getComments(postId);
     const payload = JSON.parse(localStorage.getItem("payload"));
@@ -38,8 +40,12 @@ async function loadComments(postId) {
 }
 
 
+
+
 // 댓글 등록
 async function submitComment() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("post_id");
     const commentElement = document.getElementById("new-comment")
     const newComment = commentElement.value
     console.log(`댓글 내용: ${newComment}`)
@@ -81,7 +87,7 @@ async function loadPosts() {
 
 window.onload = async function () {
     const urlParams = new URLSearchParams(window.location.search);
-    postId = urlParams.get("post_id");
+    const postId = urlParams.get("post_id");
     console.log(postId)
 
     await loadPosts(postId);
