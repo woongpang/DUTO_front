@@ -2,7 +2,7 @@
 
 // html 화면에 사용자 이름을 띄우는 방법. 
 // payload_parse는 payloada만 하면 str형태로 가져오는데 이를 object 형태로 가져오기 위함이다.
-window.onload = () => {
+window.onload = async function () {
     
     const payload = localStorage.getItem("payload")
     const payload_parse = JSON.parse(payload)
@@ -10,8 +10,6 @@ window.onload = () => {
     const followstate = localStorage.getItem("followstate")
     // const followstate_parse = JSON.parse(followstate)
 
-    
-    
     const intro = document.getElementById("intro")
     intro.innerText = `${payload_parse.username}`
 
@@ -23,23 +21,37 @@ window.onload = () => {
 
     let token = localStorage.getItem("access")
 
-    const my_respose = fetch(`${backend_base_url}/users/${payload_parse.user_id}/`,{
+    const my_respose = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`,{
         headers:{
             "Authorization" : `Bearer ${token}`
         },
         method:"GET",
     })
 
-    const my_json_response = my_respose.json()
-    
-    for (let obj of my_json_response.followings) {
-        if(obj == payload_parse.user_id){
-            let sameid = obj
-            console.log("같은게 있음")
-        }
-    }
 
-    if(sameid==payload_parse.user_id){
+    const my_json_response = await my_respose.json()
+    console.log(my_json_response)
+    console.log(my_json_response.followings)
+    console.log(payload_parse.user_id)
+
+    let sameid = null;
+    my_json_response.followings.forEach((obj) => {
+        if (obj == payload_parse.user_id) {
+            sameid = obj;
+            console.log(obj);
+            return sameid;
+        }
+    });
+    // for (let obj in my_json_response.followings) {
+    //     if(obj == payload_parse.user_id){
+    //         sameid = obj
+    //         console.log(obj)
+    //         return sameid
+    //     }
+    // }
+
+    console.log(sameid)
+    if(sameid){
         let unfollowButton = document.createElement("button")
         unfollowButton.setAttribute("class", "nav-link")
         unfollowButton.setAttribute("onclick", "unfollow()")
@@ -59,6 +71,7 @@ window.onload = () => {
         newdiv.appendChild(followButton)
     }   
     
+
     let navbarRight = document.getElementById("navbar-right")
     let newLi = document.createElement("li")
     newLi.setAttribute("class", 'nav-item')
@@ -91,14 +104,8 @@ async function follow(){
         },
         body:`${payload_parse.user_id}`
     })
+    location.reload()
     console.log(response.status)
-    if(response.status == 200){
-        const response_json =  await response.json()
-        console.log(response_json)
-
-        localStorage.setItem("followstate", response_json)
-        location.reload()
-    }
 }
 
 async function unfollow(){
@@ -113,11 +120,8 @@ async function unfollow(){
             "Authorization" : `Bearer ${token}`
         }
     })
+    location.reload()
     console.log(response.status)
-    if(response.status == 201){
-        localStorage.removeItem("followstate")
-        location.reload()
-    }
     
     // const username = document.getElementById("followuser")
     // username.remove()
