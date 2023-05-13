@@ -98,13 +98,14 @@ window.onload = async function () {
 
     my_json_posts.forEach((obj) => {
         console.log(obj.title)
+        console.log(obj.id)
         let myPosts = document.getElementById("myposts")
         let myPostLi = document.createElement("li")
         myPostLi.setAttribute("class", 'nav-item')
 
         let mypostBtn = document.createElement("button")
         mypostBtn.setAttribute("class", "nav-link btn")
-        mypostBtn.setAttribute("onclick", "clickFollowingPosts('study')")
+        mypostBtn.setAttribute("onclick", `postDetail(${obj.id})`)
         mypostBtn.innerText = `${obj.title}`
 
         myPostLi.appendChild(mypostBtn)
