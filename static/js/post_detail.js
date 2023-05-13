@@ -2,32 +2,6 @@ console.log("상세게시글 js 로드됨")
 
 let postId
 
-// delete
-async function deletePosts(postId) {
-    if(confirm("작성하신 게시물을 삭제하시겠습니까?")) {
-        let token = localStorage.getItem("access")
-
-        const response = await fetch(`${backend_base_url}/posts/${postId}/`, {
-            method: 'DELETE',
-            headers: {
-                'content-type': 'application/json',
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                "id": postId
-            })
-        })
-
-        if (response.status == 204) {
-            alert("게시글 삭제 완료!")
-            loadComments(postId);
-        } else {
-            alert(response.statusText)
-        }
-    } else {
-        loadPosts(postId);
-    }
-}
 
 
 async function loadComments(postId) {

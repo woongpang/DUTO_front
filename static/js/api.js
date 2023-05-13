@@ -200,31 +200,28 @@ async function updatePosts(url) {
 }
 
 //게시글 삭제
-async function deletePosts(postId) {
-    if(confirm("작성하신 게시물을 삭제하시겠습니까?")) {
-        let token = localStorage.getItem("access")
+async function deletePosts(url) {
+    const urlParams = new URLSearchParams(url);
+    const postId = urlParams.get("post_id");
 
-        const response = await fetch(`${backend_base_url}/posts/${postId}/`, {
-            method: 'DELETE',
-            headers: {
-                'content-type': 'application/json',
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                "id": postId
-            })
-        })
+    let token = localStorage.getItem("access")
 
-        if (response.status == 204) {
-            alert("게시글 삭제 완료!")
-            loadComments(postId);
-        } else {
-            alert(response.statusText)
-        }
+    const response = await fetch(`${backend_base_url}/posts/${postId}/`, {
+        headers: {
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        },
+        method: 'DELETE',
+    })
+
+    if (response.status == 204) {
+        alert("게시글 삭제 완료!")
+        window.location.replace(`${frontend_base_url}/`)
     } else {
-        loadPosts(postId);
+        alert(response.statusText)
     }
 }
+
 
 // 상세 게시글 조회
 async function getPost(postId) {
