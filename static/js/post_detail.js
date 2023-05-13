@@ -4,25 +4,36 @@ let postId
 
 async function loadComments(postId) {
     const response = await getComments(postId);
-    console.log(response)
+    const payload = JSON.parse(localStorage.getItem("payload"));
+    const currentUserId = payload.username;
+    console.log(currentUserId)
 
-    const commentsList = document.getElementById("comments-list")
-    commentsList.innerHTML = ""
+    const commentsList = document.getElementById("comments-list");
+    commentsList.innerHTML = "";
 
-    response.forEach(comment => {
+    response.forEach((comment) => {
+        let buttons = '';
+        console.log(comment.user)
+        // 로그인한 사용자가 댓글 작성자와 일치하는 경우
+        if (currentUserId === comment.user) {
+            buttons = `
+            <div class="col d-grid gap-2 d-md-flex justify-content-end p-2">
+                <button type="button" class="btn btn-primary" onclick="modifyComment(${postId}, ${comment.id})">수정</button>
+                <button type="button" class="btn btn-primary" onclick="deleteComment(${postId}, ${comment.id})">삭제</button>
+            </div>
+            `;
+        }
+
         commentsList.innerHTML += `
         <li class="media d-flex mt-2 mb-2 mr-2 border border-dark">
-        <img class="img-thumbnail" src="https://img.freepik.com/free-photo/cute-ai-generated-cartoon-bunny_23-2150288879.jpg" alt="profile img" width="50" height"50">
-        <div class="media-body">
-            <h6 class="mt-1 mb-1 ms-1 me-1">${comment.user}</h6>
-            <span class="mt-1 mb-1 ms-1 me-1">${comment.comment}</span>
-        </div>
-        <div class="col d-grid gap-2 d-md-flex justify-content-end p-2">
-            <button type="button" class="btn btn-primary" onclick="modifyComment(${postId}, ${comment.id})">수정</button>
-            <button type="button" class="btn btn-primary" onclick="deleteComment(${postId}, ${comment.id})">삭제</button>
-        </div>
+            <img class="img-thumbnail" src="https://img.freepik.com/free-photo/cute-ai-generated-cartoon-bunny_23-2150288879.jpg" alt="profile img" width="50" height"50">
+            <div class="media-body">
+                <h6 class="mt-1 mb-1 ms-1 me-1">${comment.user}</h6>
+                <span class="mt-1 mb-1 ms-1 me-1">${comment.comment}</span>
+            </div>
+            ${buttons}
         </li>
-        `
+        `;
     });
 }
 
