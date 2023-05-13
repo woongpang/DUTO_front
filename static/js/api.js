@@ -158,6 +158,74 @@ async function createPost(url) {
     }
 }
 
+// 게시글수정 update
+async function updatePosts(url) {
+    const urlParams = new URLSearchParams(url);
+    const postId = urlParams.get("post_id");        
+
+    const title = document.getElementById('update-title').value
+    const img = document.getElementById('update-image').value
+    const content = document.getElementById('update-content').value
+    const star = document.getElementById('star').getAttribute('value')
+    console.log(title, img, content, star)
+
+    const formdata = new FormData();
+
+    formdata.append("title", title)
+    formdata.append("image", img || '')
+    formdata.append("content", content)
+    formdata.append("star", star)
+
+    let token = localStorage.getItem("access")
+
+    const response = await fetch(`${backend_base_url}/posts/${postId}/`, {
+        headers: {
+            // 'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        method:'PUT',
+        body: formdata
+        })
+    
+    console.log(response.status)
+
+    if (response.status == 200) {
+        alert("글 수정 완료")
+        window.location.replace(`${frontend_base_url}/posts/post_detail.html?post_id=${postId}`)
+    } else if (title == ''  || content == '' ) {
+        alert("빈칸을 입력해 주세요.")
+    } else {
+        alert(response.statusText)
+    }
+}
+
+//게시글 삭제
+async function deletePosts(postId) {
+    if(confirm("작성하신 게시물을 삭제하시겠습니까?")) {
+        let token = localStorage.getItem("access")
+
+        const response = await fetch(`${backend_base_url}/posts/${postId}/`, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json',
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                "id": postId
+            })
+        })
+
+        if (response.status == 204) {
+            alert("게시글 삭제 완료!")
+            loadComments(postId);
+        } else {
+            alert(response.statusText)
+        }
+    } else {
+        loadPosts(postId);
+    }
+}
+
 // 상세 게시글 조회
 async function getPost(postId) {
     const response = await fetch(`${backend_base_url}/posts/${postId}/`)
@@ -169,14 +237,6 @@ async function getPost(postId) {
         alert(response.statusText)
     }
 }
-
-
-
-
-
-
-
-
 
 
 // 프로필 수정

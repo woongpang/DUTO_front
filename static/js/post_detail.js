@@ -2,40 +2,6 @@ console.log("상세게시글 js 로드됨")
 
 let postId
 
-// update
-async function updatePosts(url) {
-    const urlParams = new URLSearchParams(url);
-    const postId = urlParams.get("post_id");
-    let token = localStorage.getItem("access")
-    
-
-    const title = document.getElementById('post-title').value
-    const img = document.getElementById('post-image').value
-    const content = document.getElementById('post-content').value
-    console.log(title, img, content)
-
-    const response = await fetch(`${backend_base_url}/posts/${postId}/`, {
-        headers: {
-            'content-type': 'application/json',
-            "Authorization": `Bearer ${token}`
-        },
-        method:'PUT',
-        body: JSON.stringify ({
-            'title': title,
-            'image': img,
-            'content': content
-        })
-    })
-    console.log(response.status)
-
-    if (response.status == 200) {
-        alert("글 작성 완료")
-        window.location.replace('index.html')
-    } else if (title == ''  || img || '' || content == '' ) {
-        alert("빈칸을 입력해 주세요.")
-    }
-}
-
 // delete
 async function deletePosts(postId) {
     if(confirm("작성하신 게시물을 삭제하시겠습니까?")) {
@@ -104,6 +70,8 @@ async function loadComments(postId) {
 
 // 댓글 등록
 async function submitComment() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("post_id");
     const commentElement = document.getElementById("new-comment")
     const newComment = commentElement.value
     console.log(`댓글 내용: ${newComment}`)
@@ -145,7 +113,7 @@ async function loadPosts() {
 
 window.onload = async function () {
     const urlParams = new URLSearchParams(window.location.search);
-    postId = urlParams.get("post_id");
+    const postId = urlParams.get("post_id");
     console.log(postId)
 
     await loadPosts(postId);
