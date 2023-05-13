@@ -6,9 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>두 마리 토끼 | 프로필 페이지</title>
-    <script src="/static/js/api.js"></script>
     <script src="/static/js/loader.js"></script>
-    <script src="/js/profile.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/profile.js"></script>
+
     <link rel="stylesheet" href="/static/css/yby.css">
 
     <!-- CSS only -->
@@ -21,8 +22,9 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-light mb-5">
-        <div class="container-fluid " style="margin:0 10% 0 10%">
+
+    <nav class="navbar navbar-expand-lg bg-light mb-3">
+        <div class="container-fluid">
             <a class="navbar-brand" href="/">두 마리 토끼</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -35,25 +37,28 @@
                         <a class="nav-link" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+
+                        <a class="nav-link dropdown-toggle" href="/posts/post_list.html" id="studyDropdown"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             study
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" id="study" onclick="handleClickCategory(this.id)">
+                            <li><a class="dropdown-item" onclick="clickCategory('study')">
                                     전체 게시글보기</a></li>
-                            <li><a class="dropdown-item" href="#">팔로잉 게시글 보기</a></li>
+                            <li><a class="dropdown-item" onclick="clickFollowingPosts('study')">팔로잉 게시글 보기</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        <a class="nav-link dropdown-toggle" href="/posts/post_list.html" id="restDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             rest
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" id="rest" onclick="handleClickCategory(this.id)">
+
+                            <li><a class="dropdown-item" onclick="clickCategory('rest')">
                                     전체 게시글보기</a></li>
-                            <li><a class="dropdown-item" href="#">팔로잉 게시글 보기</a></li>
+                            <li><a class="dropdown-item" onclick="clickFollowingPosts('rest')">팔로잉 게시글 보기</a></li>
+
                         </ul>
                     </li>
                 </ul>
@@ -62,6 +67,7 @@
                         <a class="nav-link" href="/users/login.html" id="login-button">로그인</a>
                     </li>
                     <li class="nav-item">
+
                         <a class="nav-link" href="/users/profile.html" id="intro"></a>
                     </li>
                 </ul>
@@ -84,10 +90,10 @@
         </div>
         <div>
             <div class="box2">
-                <p><ol id="likeposts">좋아요 한 글</ol>
+                <p><ol id="likeposts">좋아요 한 글</ol></p>
             </div>
             <div class="box3">
-                <p><ol id="myposts">내가 쓴 글</ol>
+                <p><ol id="myposts">내가 쓴 글</ol></p>
             </div>
         </div>
     </div>
