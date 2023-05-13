@@ -239,11 +239,10 @@ async function getPost(postId) {
 // 프로필 수정
 async function getUser() {
   try {
-    const response = await fetch('/api/users/profile');
+    const response = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`);
     const user = await response.json();
     return user;
   } catch (error) {
-    console.error(error);
   }
 }
 

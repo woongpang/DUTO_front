@@ -44,17 +44,6 @@
         </form>
     </div>
     <script>
-        // 초기화
-        window.onload = async () => {
-            const user = await getUser(); // 현재 로그인한 사용자 정보 가져오기
-            if (user) {
-                document.querySelector('#username').value = user.username;
-                document.querySelector('#email').value = user.email;
-                document.querySelector('#name').value = user.name || '';
-                document.querySelector('#age').value = user.age || '';
-                document.querySelector('#introduction').value = user.introduction || '';
-            }
-        }
     </script>
 </body>
 </html>
