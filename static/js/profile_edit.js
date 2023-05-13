@@ -1,39 +1,50 @@
 
-window.onload = function() {
-  fetch('/api/users/profile')
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById('username').innerText = data.username;
-      document.getElementById('email').innerText = data.email;
-      document.getElementById('name').value = data.name;
-      document.getElementById('age').value = data.age;
-      document.getElementById('introduction').value = data.introduction;
-    })
-    .catch(error => console.error(error));
+window.onload = async function() {
+  const payload = localStorage.getItem("payload")
+  const payload_parse = JSON.parse(payload)
+  let token = localStorage.getItem("access")
+
+  const my_profile_edit = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`,{
+        headers:{
+            "Authorization" : `Bearer ${token}`
+        },
+        method:"GET",
+  })
+  console.log(my_profile_edit)
+  const myprofile_response = await my_profile_edit.json()
+  console.log(myprofile_response)
+    
+    // const usernameedit = document.getElementById('username')
+    // const nameedit = document.getElementById('name')
+    // const ageedit = document.getElementById('age')
+    // const emailedit = document.getElementById('email')
+    // const introductionedit = document.getElementById('introduction')
+    
+
 };
 
-function handleUpdateButton() {
+
+
+async function handleUpdateButton() {
+  const payload = localStorage.getItem("payload")
+  const payload_parse = JSON.parse(payload)
+  let token = localStorage.getItem("access")
+
   const name = document.getElementById('name').value;
   const age = document.getElementById('age').value;
   const introduction = document.getElementById('introduction').value;
 
-  fetch('/api/users/profile', {
+  const my_profile_modify = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`, {
+    headers: {
+      "Authorization" : `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify({
         name: name,
         age: age,
         introduction: introduction
       })
     })
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById('name').value = data.name;
-      document.getElementById('age').value = data.age;
-      document.getElementById('introduction').value = data.introduction;
-      alert('프로필이 수정되었습니다.');
-    })
-    .catch(error => console.error(error));
+    console.log(my_profile_modify)
 }

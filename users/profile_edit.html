@@ -23,19 +23,19 @@
         <form name="update-profile-box">
             <h2 class="text-center">프로필</h2>
             <div class="mb-3">
-                <input type="text" class="form-control" name="email" id="username" placeholder="아이디" disabled>
+                <input type="text" class="form-control"  id="username" placeholder="아이디" disabled>
             </div>
             <div class="mb-3">
-                <input type="email" class="form-control" name="email" id="email" placeholder="이메일" disabled>
+                <input type="email" class="form-control"  id="email" placeholder="이메일" disabled>
             </div>
             <div class="mb-3">
-                <input type="text" class="form-control" name="name" id="name" placeholder="이름">
+                <input type="text" class="form-control"  id="name" placeholder="이름">
             </div>
             <div class="mb-3">
-                <input type="number" class="form-control" name="age" id="age" placeholder="나이">
+                <input type="number" class="form-control"  id="age" placeholder="나이">
             </div>
             <div class="mb-3">
-                <textarea class="form-control" name="introduction" id="introduction" placeholder="자기소개 한 마디!"
+                <textarea class="form-control" id="introduction" placeholder="자기소개 한 마디!"
                     rows="3"></textarea>
             </div>
             <div class="text-center mb-3">
@@ -44,17 +44,6 @@
         </form>
     </div>
     <script>
-        // 초기화
-        window.onload = async () => {
-            const user = await getUser(); // 현재 로그인한 사용자 정보 가져오기
-            if (user) {
-                document.querySelector('#username').value = user.username;
-                document.querySelector('#email').value = user.email;
-                document.querySelector('#name').value = user.name || '';
-                document.querySelector('#age').value = user.age || '';
-                document.querySelector('#introduction').value = user.introduction || '';
-            }
-        }
     </script>
 </body>
 </html>
