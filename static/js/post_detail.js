@@ -10,7 +10,6 @@ async function loadComments(postId) {
     commentsList.innerHTML = ""
 
     response.forEach(comment => {
-
         commentsList.innerHTML += `
         <li class="media d-flex mt-2 mb-2 mr-2 border border-dark">
         <img class="img-thumbnail" src="https://img.freepik.com/free-photo/cute-ai-generated-cartoon-bunny_23-2150288879.jpg" alt="profile img" width="50" height"50">
@@ -24,9 +23,7 @@ async function loadComments(postId) {
         </div>
         </li>
         `
-
     });
-
 }
 
 
@@ -74,9 +71,7 @@ async function loadPosts() {
 window.onload = async function () {
     const urlParams = new URLSearchParams(window.location.search);
     postId = urlParams.get("post_id");
-    // commentId = urlParams.get("comment_id");
     console.log(postId)
-    // console.log(commentId)
 
     await loadPosts(postId);
     await loadComments(postId);
