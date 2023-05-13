@@ -6,7 +6,6 @@ window.onload = async function () {
     
     const payload = localStorage.getItem("payload")
     const payload_parse = JSON.parse(payload)
-
     const intro = document.getElementById("intro")
     intro.innerText = `${payload_parse.username}`
 
@@ -50,6 +49,7 @@ window.onload = async function () {
     console.log(sameid)
     if(sameid){
         let unfollowButton = document.createElement("button")
+
         unfollowButton.setAttribute("class", "nav-link btn")
         unfollowButton.setAttribute("onclick", "unfollow()")
         unfollowButton.innerText = "unfollow"
@@ -62,6 +62,7 @@ window.onload = async function () {
     }
     else{
         let followButton = document.createElement("button")
+
         followButton.setAttribute("class", "nav-link btn")
         followButton.setAttribute("onclick", "follow()")
         followButton.innerText = "follow"
@@ -72,7 +73,6 @@ window.onload = async function () {
     let navbarRight = document.getElementById("navbar-right")
     let newLi = document.createElement("li")
     newLi.setAttribute("class", 'nav-item')
-
     let logoutBtn = document.createElement("button")
     logoutBtn.setAttribute("class", "nav-link btn")
     logoutBtn.setAttribute("onclick", "handleLogout()")
