@@ -285,8 +285,8 @@ async function createComment(postId, newComment) {
 }
 
 // 댓글 수정
-async function modifyComment(postId, commentId) {
-    let newComment = prompt("수정할 댓글을 입력하세요."); // 수행할 댓글 수정 내용을 입력 받습니다.
+async function modifyComment(postId, commentId, currentComment) {
+    let newComment = prompt("수정할 댓글을 입력하세요.", currentComment); // 수행할 댓글 수정 내용을 입력 받고, 기존 댓글 내용을 보여줍니다.
 
     if (newComment !== null) { // 수정 내용이 null 이 아닌 경우
         let token = localStorage.getItem("access");
@@ -312,7 +312,6 @@ async function modifyComment(postId, commentId) {
         loadComments(postId);
     }
 }
-
 
 
 //댓글 삭제

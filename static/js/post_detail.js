@@ -20,7 +20,7 @@ async function loadComments(postId) {
         if (currentUserId === comment.user) {
             buttons = `
             <div class="col d-grid gap-2 d-md-flex justify-content-end p-2">
-                <button type="button" class="btn btn-primary" onclick="modifyComment(${postId}, ${comment.id})">수정</button>
+                <button type="button" class="btn btn-primary" onclick="modifyComment(${postId}, ${comment.id}, '${comment.comment}')">수정</button>
                 <button type="button" class="btn btn-primary" onclick="deleteComment(${postId}, ${comment.id})">삭제</button>
             </div>
             `;
