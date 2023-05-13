@@ -2,7 +2,7 @@ console.log("post list js 로드됨")
 
 
 // 카테고리별 (팔로잉) 게시글 리스트 보기
-window.onload = async function loadPosts() {
+window.onload = async function loadCategoryPosts() {
     // url에서 카테고리 이름을 가져옴
     const urlParams = new URLSearchParams(window.location.search);
     const categoryName = urlParams.get("category");

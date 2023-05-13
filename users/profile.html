@@ -22,58 +22,7 @@
 </head>
 
 <body>
-
-    <nav class="navbar navbar-expand-lg bg-light mb-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">두 마리 토끼</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navbar-left">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/">Home</a>
-                    </li>
-                    <li class="nav-item dropdown">
-
-                        <a class="nav-link dropdown-toggle" href="/posts/post_list.html" id="studyDropdown"
-                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            study
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" onclick="clickCategory('study')">
-                                    전체 게시글보기</a></li>
-                            <li><a class="dropdown-item" onclick="clickFollowingPosts('study')">팔로잉 게시글 보기</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="/posts/post_list.html" id="restDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            rest
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                            <li><a class="dropdown-item" onclick="clickCategory('rest')">
-                                    전체 게시글보기</a></li>
-                            <li><a class="dropdown-item" onclick="clickFollowingPosts('rest')">팔로잉 게시글 보기</a></li>
-
-                        </ul>
-                    </li>
-                </ul>
-                <ul class=" navbar-nav ml-auto" id="navbar-right">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/users/login.html" id="login-button">로그인</a>
-                    </li>
-                    <li class="nav-item">
-
-                        <a class="nav-link" href="/users/profile.html" id="intro"></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <header></header>
     <div class="div-one">
         <div class="box1">
             <div class="col">
@@ -82,18 +31,22 @@
                     <text x="50%" y="50%" fill="#777" dy=".3em"></text>
                 </svg>
             </div>
-            <div id="follow" style="margin:0 30% 10% 33%;" >
+            <div id="follow" style="margin:0 30% 10% 33%;">
             </div>
             <div>
-                <p><a class="btn btn-secondary" style="margin:15% 30% 0 35%;" href="profile_edit.html" >프로필 수정 »</a></p>
+                <p><a class="btn btn-secondary" style="margin:15% 30% 0 35%;" href="profile_edit.html">프로필 수정 »</a></p>
             </div>
         </div>
         <div>
             <div class="box2">
-                <p><ol id="likeposts">좋아요 한 글</ol></p>
+                <p>
+                <ol id="likeposts">좋아요 한 글</ol>
+                </p>
             </div>
             <div class="box3">
-                <p><ol id="myposts">내가 쓴 글</ol></p>
+                <p>
+                <ol id="myposts">내가 쓴 글</ol>
+                </p>
             </div>
         </div>
     </div>
