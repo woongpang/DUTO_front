@@ -1,11 +1,11 @@
 
 window.onload = function() {
-  fetch('/api/users/me')
+  fetch('/api/users/profile')
     .then(response => response.json())
     .then(data => {
       document.getElementById('username').innerText = data.username;
       document.getElementById('email').innerText = data.email;
-      document.getElementById('realname').value = data.realname;
+      document.getElementById('name').value = data.name;
       document.getElementById('age').value = data.age;
       document.getElementById('introduction').value = data.introduction;
     })
@@ -13,24 +13,24 @@ window.onload = function() {
 };
 
 function handleUpdateButton() {
-  const realname = document.getElementById('realname').value;
+  const name = document.getElementById('name').value;
   const age = document.getElementById('age').value;
   const introduction = document.getElementById('introduction').value;
 
-  fetch('/api/users/me', {
+  fetch('/api/users/profile', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: realname,
+        name: name,
         age: age,
         introduction: introduction
       })
     })
     .then(response => response.json())
     .then(data => {
-      document.getElementById('realname').value = data.name;
+      document.getElementById('name').value = data.name;
       document.getElementById('age').value = data.age;
       document.getElementById('introduction').value = data.introduction;
       alert('프로필이 수정되었습니다.');

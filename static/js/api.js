@@ -170,6 +170,17 @@ async function getPost(postId) {
     }
 }
 
+// 프로필 수정
+async function getUser() {
+  try {
+    const response = await fetch('/api/users/profile');
+    const user = await response.json();
+    return user;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 // 댓글 조회
 async function getComments(postId) {
     const response = await fetch(`${backend_base_url}/posts/${postId}/comments/`,)
@@ -235,6 +246,8 @@ async function modifyComment(postId, commentId) {
         loadComments(postId);
     }
 }
+
+
 
 //댓글 삭제
 async function deleteComment(postId, commentId) {
