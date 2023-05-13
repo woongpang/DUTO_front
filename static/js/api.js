@@ -171,32 +171,29 @@ async function createPost(url) {
     }
 }
 
-// 게시글 수정 update
+// 게시글 수정
 async function updatePosts(url) {
     const urlParams = new URLSearchParams(url);
     const postId = urlParams.get("post_id");
-    const exist_post = await getPost(postId);
 
     const title = document.getElementById('update-title').value
     const content = document.getElementById('update-content').value
     let img = document.getElementById('update-image').files[0]
     let star = document.getElementById('star').getAttribute('value')
-    console.log(title, img, content, star)
-
-    // 별 클릭 안 했을 때 원래 star에 있던 데이터 다시 저장하는 코드
-    if (star == null) {
-        star = exist_post.star
-    }
 
     const formdata = new FormData();
+
+    formdata.append("title", title)
+    formdata.append("content", content)
 
     // 사진 새로 선택한 경우에만 formdata에 이미지 붙이기(안 하면 원래 데이터베이스에 이미지 그대로 있게 함)
     if (img) {
         formdata.append("image", img)
     }
-    formdata.append("title", title)
-    formdata.append("content", content)
-    formdata.append("star", star)
+    // 별을 새로 선택한 경우에만 formdata에 데이터 붙이기(클릭 안 한 경우 원래 데이터베이스에 star 값 그대로 있게 함)
+    if (star) {
+        formdata.append("star", star)
+    }
 
     let token = localStorage.getItem("access")
 
@@ -207,8 +204,6 @@ async function updatePosts(url) {
         method: 'PUT',
         body: formdata
     })
-
-    console.log(response.status)
 
     if (response.status == 200) {
         alert("글 수정 완료")
