@@ -18,6 +18,7 @@ window.onload = async function loadCategoryPosts() {
     }
     console.log(posts)
     const postCategoryList = document.getElementById("post-category-list")
+    postList(posts, postCategoryList);
 
 
     // const postId = urlParams.get("post_id");
@@ -26,7 +27,13 @@ window.onload = async function loadCategoryPosts() {
     //     document.getElementById(`rating${i}`).checked = true;
     // }
 
-    postList(posts, postCategoryList);
+    // posts.forEach(post=>{
+    //     //원래 별 띄우기
+    // for (let i = 1; i <= post.star; i++) {
+    //     document.getElementById(`rating${i}`).checked = true;
+    // }
+    // })
+    
 }
 
 // window.onload = async function loadCategoryPosts() {

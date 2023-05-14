@@ -59,6 +59,8 @@ async function submitComment() {
 async function loadPosts() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
+    const payload = JSON.parse(localStorage.getItem("payload"));
+    const currentUserId = payload.username;
     
     const response = await getPost(postId);
 
@@ -69,10 +71,21 @@ async function loadPosts() {
     const postTitle = document.getElementById("post-title")
     const postContent = document.getElementById("post-content")
     const postImage = document.getElementById("post-image")
+    const editButton = document.getElementById("edit-button")
+    const deleteButton = document.getElementById("delete-button")
 
     postuser.innerHTML = response.user
     postTitle.innerText = response.title
     postContent.innerText = response.content
+
+    if (response.user_id === currentUserId) {
+        editButton.style.display = "block";
+        deleteButton.style.display = "block";
+    } else {
+        editButton.style.display = "none";
+        deleteButton.style.display = "none";
+    }
+
     const newImage = document.createElement("img")
 
     if (response.image) {
@@ -193,10 +206,11 @@ window.onload = async function () {
 
     let count_like = 1
     for (let obj in response.like) {
+        console.log(response.like)
         count_like += Number(obj)
     }
 
-    count.innerText = `${count_like}`
+    count.innerText = `${count_like}개`
 
     const exist_post = await getPost(postId);
     console.log(exist_post)

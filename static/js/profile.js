@@ -6,8 +6,6 @@ window.onload = async function () {
     
     const payload = localStorage.getItem("payload")
     const payload_parse = JSON.parse(payload)
-    const intro = document.getElementById("intro")
-    intro.innerText = `${payload_parse.username}`
 
 
     let token = localStorage.getItem("access")
@@ -28,17 +26,6 @@ window.onload = async function () {
 
     const my_json_response = await my_respose.json()
     
-
-    let navbarRight = document.getElementById("navbar-right")
-    let newLi = document.createElement("li")
-    newLi.setAttribute("class", 'nav-item')
-    let logoutBtn = document.createElement("button")
-    logoutBtn.setAttribute("class", "nav-link btn")
-    logoutBtn.setAttribute("onclick", "handleLogout()")
-    logoutBtn.innerText = "Logout"
-
-    newLi.appendChild(logoutBtn)
-    navbarRight.appendChild(newLi)
 
     let loginButton = document.getElementById("login-button")
     loginButton.style.display = "none"

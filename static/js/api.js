@@ -401,7 +401,7 @@ async function likeClick(){
             "Authorization" : `Bearer ${token}`
         },
     })
-    
+    location.reload()
     // const username = document.getElementById("followuser")
     // username.remove()
 }
