@@ -216,31 +216,30 @@ async function updatePosts(url) {
 }
 
 //게시글 삭제
+
 async function deletePosts(postId) {
     if (confirm("작성하신 게시물을 삭제하시겠습니까?")) {
         let token = localStorage.getItem("access")
 
-        const response = await fetch(`${backend_base_url}/posts/${postId}/`, {
-            method: 'DELETE',
-            headers: {
-                'content-type': 'application/json',
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                "id": postId
-            })
-        })
 
-        if (response.status == 204) {
-            alert("게시글 삭제 완료!")
-            loadComments(postId);
-        } else {
-            alert(response.statusText)
-        }
+    let token = localStorage.getItem("access")
+
+    const response = await fetch(`${backend_base_url}/posts/${postId}/`, {
+        headers: {
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        },
+        method: 'DELETE',
+    })
+
+    if (response.status == 204) {
+        alert("게시글 삭제 완료!")
+        window.location.replace(`${frontend_base_url}/`)
     } else {
-        loadPosts(postId);
+        alert(response.statusText)
     }
 }
+
 
 // 상세 게시글 조회
 async function getPost(postId) {
@@ -304,8 +303,8 @@ async function createComment(postId, newComment) {
 }
 
 // 댓글 수정
-async function modifyComment(postId, commentId) {
-    let newComment = prompt("수정할 댓글을 입력하세요."); // 수행할 댓글 수정 내용을 입력 받습니다.
+async function modifyComment(postId, commentId, currentComment) {
+    let newComment = prompt("수정할 댓글을 입력하세요.", currentComment); // 수행할 댓글 수정 내용을 입력 받고, 기존 댓글 내용을 보여줍니다.
 
     if (newComment !== null) { // 수정 내용이 null 이 아닌 경우
         let token = localStorage.getItem("access");
@@ -331,7 +330,6 @@ async function modifyComment(postId, commentId) {
         loadComments(postId);
     }
 }
-
 
 
 //댓글 삭제
