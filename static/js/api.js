@@ -89,6 +89,19 @@ function checkNotLogin() {
     }
 }
 
+// 메인페이지 조회
+async function getAllPosts() {
+    const response = await fetch(`${backend_base_url}/posts/`)
+    console.log(response)
+
+    if (response.status == 200) {
+        const response_json = await response.json()
+        return response_json
+    } else {
+        alert("불러오는 데 실패했습니다")
+    }
+}
+
 // 카테고리별 전체 게시글 조회
 async function getPosts(categoryName) {
     const response = await fetch(`${backend_base_url}/posts/category/${categoryName}/`)
@@ -158,41 +171,44 @@ async function createPost(url) {
     }
 }
 
-// 게시글수정 update
+// 게시글 수정
 async function updatePosts(url) {
     const urlParams = new URLSearchParams(url);
-    const postId = urlParams.get("post_id");        
+    const postId = urlParams.get("post_id");
 
     const title = document.getElementById('update-title').value
-    const img = document.getElementById('update-image').files[0]
     const content = document.getElementById('update-content').value
-    const star = document.getElementById('star').getAttribute('value')
-    console.log(title, img, content, star)
+    let img = document.getElementById('update-image').files[0]
+    let star = document.getElementById('star').getAttribute('value')
 
     const formdata = new FormData();
 
     formdata.append("title", title)
-    formdata.append("image", img || '')
     formdata.append("content", content)
-    formdata.append("star", star)
+
+    // 사진 새로 선택한 경우에만 formdata에 이미지 붙이기(안 하면 원래 데이터베이스에 이미지 그대로 있게 함)
+    if (img) {
+        formdata.append("image", img)
+    }
+    // 별을 새로 선택한 경우에만 formdata에 데이터 붙이기(클릭 안 한 경우 원래 데이터베이스에 star 값 그대로 있게 함)
+    if (star) {
+        formdata.append("star", star)
+    }
 
     let token = localStorage.getItem("access")
 
     const response = await fetch(`${backend_base_url}/posts/${postId}/`, {
         headers: {
-            // 'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        method:'PUT',
+        method: 'PUT',
         body: formdata
-        })
-    
-    console.log(response.status)
+    })
 
     if (response.status == 200) {
         alert("글 수정 완료")
         window.location.replace(`${frontend_base_url}/posts/post_detail.html?post_id=${postId}`)
-    } else if (title == ''  || content == '' ) {
+    } else if (title == '' || content == '') {
         alert("빈칸을 입력해 주세요.")
     } else {
         alert(response.statusText)
@@ -200,9 +216,11 @@ async function updatePosts(url) {
 }
 
 //게시글 삭제
-async function deletePosts(url) {
-    const urlParams = new URLSearchParams(url);
-    const postId = urlParams.get("post_id");
+
+async function deletePosts(postId) {
+    if (confirm("작성하신 게시물을 삭제하시겠습니까?")) {
+        let token = localStorage.getItem("access")
+    }
 
     let token = localStorage.getItem("access")
 
@@ -235,16 +253,6 @@ async function getPost(postId) {
     }
 }
 
-
-// 프로필 수정
-async function getUser() {
-  try {
-    const response = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`);
-    const user = await response.json();
-    return user;
-  } catch (error) {
-  }
-}
 
 // 댓글 조회
 async function getComments(postId) {
@@ -340,16 +348,15 @@ async function deleteComment(postId, commentId) {
     }
 }
 
+// 팔로우
 async function follow(){
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
     
     const response_post = await getPost(postId);
     console.log(response_post.user)
+
     let token = localStorage.getItem("access")
-    const payload = localStorage.getItem("payload")
-    const payload_parse = JSON.parse(payload)
-    
 
     const response = await fetch(`${backend_base_url}/users/${response_post.user}/follow/`,{
         method: 'POST',
@@ -359,23 +366,41 @@ async function follow(){
         body:`${response_post.user}`
     })
     location.reload()
-    console.log(response.status)
 }
 
+// 언팔로우
 async function unfollow(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("post_id");
 
+    const response_post = await getPost(postId);
     let token = localStorage.getItem("access")
-    const payload = localStorage.getItem("payload")
-    const payload_parse = JSON.parse(payload)
 
-    const response = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/follow/`,{
+    const response = await fetch(`${backend_base_url}/users/${response_post.user}/follow/`,{
         method: 'POST',
         headers:{
             "Authorization" : `Bearer ${token}`
         }
     })
     location.reload()
-    console.log(response.status)
+    
+    // const username = document.getElementById("followuser")
+    // username.remove()
+}
+
+async function likeClick(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("post_id");
+
+    const response_post = await getPost(postId);
+    let token = localStorage.getItem("access")
+
+    const response = await fetch(`${backend_base_url}/posts/${postId}/likes/`,{
+        method: 'POST',
+        headers:{
+            "Authorization" : `Bearer ${token}`
+        },
+    })
     
     // const username = document.getElementById("followuser")
     // username.remove()

@@ -118,9 +118,6 @@ window.onload = async function () {
     const postId = urlParams.get("post_id");
     
     const response = await getPost(postId);
-
-    console.log(response)
-    console.log(response.user)
     // 팔로우 기능
 
     // const followBtn = document.createElement("button")
@@ -153,14 +150,14 @@ window.onload = async function () {
 
     let sameid = null;
     my_json_response.followings.forEach((obj) => {
-        if (obj == payload_parse.user_id) {
+        if (obj == response.user) {
             sameid = obj;
             return sameid;
         }
     });
 
 
-    console.log(sameid)
+
     // for (let obj in my_json_response.followings) {
     //     if(obj == payload_parse.user_id){
     //         sameid = obj
@@ -191,6 +188,22 @@ window.onload = async function () {
         } 
     }
     
+    const count = document.getElementById("count")
+
+
+    let count_like = 1
+    for (let obj in response.like) {
+        count_like += Number(obj)
+    }
+
+    count.innerText = `${count_like}`
+
+    const exist_post = await getPost(postId);
+    console.log(exist_post)
+
+    for (let i = 1; i <= exist_post.star; i++) {
+        document.getElementById(`rating${i}`).checked = true;
+    }
 
     await loadPosts(postId);
     await loadComments(postId);
