@@ -164,7 +164,7 @@ async function updatePosts(url) {
     const postId = urlParams.get("post_id");        
 
     const title = document.getElementById('update-title').value
-    const img = document.getElementById('update-image').value
+    const img = document.getElementById('update-image').files[0]
     const content = document.getElementById('update-content').value
     const star = document.getElementById('star').getAttribute('value')
     console.log(title, img, content, star)
@@ -340,3 +340,43 @@ async function deleteComment(postId, commentId) {
     }
 }
 
+async function follow(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("post_id");
+    
+    const response_post = await getPost(postId);
+    console.log(response_post.user)
+    let token = localStorage.getItem("access")
+    const payload = localStorage.getItem("payload")
+    const payload_parse = JSON.parse(payload)
+    
+
+    const response = await fetch(`${backend_base_url}/users/${response_post.user}/follow/`,{
+        method: 'POST',
+        headers:{
+            "Authorization" : `Bearer ${token}`
+        },
+        body:`${response_post.user}`
+    })
+    location.reload()
+    console.log(response.status)
+}
+
+async function unfollow(){
+
+    let token = localStorage.getItem("access")
+    const payload = localStorage.getItem("payload")
+    const payload_parse = JSON.parse(payload)
+
+    const response = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/follow/`,{
+        method: 'POST',
+        headers:{
+            "Authorization" : `Bearer ${token}`
+        }
+    })
+    location.reload()
+    console.log(response.status)
+    
+    // const username = document.getElementById("followuser")
+    // username.remove()
+}

@@ -20,12 +20,20 @@
 
 <body>
     <header></header>
-    <div class="container text-center border border-dark">
+    
+    <div class="container border border-dark">
         <!-- <h5 id="post-title" class="mb-3"></h5> -->
-        <div class="row row-cols-1 row-cols-md-2" id="post">
+        <div>
+            <h1>
+                <div id="post-user" style="float: left;"></div>
+                <div id="following" style="float: left;"></div>
+            </h1>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2" id="post" style="clear: both;">
+            
             <div id="post-image" class="col"></div>
             <div class="container">
-                <div id="post-title" class="mb-5 fs-5"></div>
+                <div id="post-title" class="mb-5 fs-2"></div>
                 <div id="post-content" class="col align-self-center"></div>
             </div>
         </div>

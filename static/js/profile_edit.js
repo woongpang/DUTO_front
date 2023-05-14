@@ -3,17 +3,19 @@ window.onload = async function() {
   const payload = localStorage.getItem("payload")
   const payload_parse = JSON.parse(payload)
   let token = localStorage.getItem("access")
-
+  
   const my_profile_edit = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`,{
         headers:{
             "Authorization" : `Bearer ${token}`
         },
         method:"GET",
   })
-  console.log(my_profile_edit)
+
   const myprofile_response = await my_profile_edit.json()
   console.log(myprofile_response)
-    
+  
+  const profile_username = document.getElementById("username")
+  profile_username.setAttribute("value", `${myprofile_response.username}`)
 
 };
 
