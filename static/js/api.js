@@ -334,7 +334,6 @@ async function modifyComment(postId, commentId, currentComment) {
     }
 }
 
-
 //댓글 삭제
 async function deleteComment(postId, commentId) {
     if (confirm("정말 삭제하시겠습니까?")) {
