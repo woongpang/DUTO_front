@@ -69,16 +69,6 @@ async function getUser() {
     }
 }
 
-// 뭐하는 애더라?
-async function handleMock() {
-    const response = await fetch(`${backend_base_url}/users/mock/`, {
-        headers: {
-            "Authorization": "Bearer " + localStorage.getItem("access")
-        },
-        method: 'GET',
-    })
-}
-
 // 로그아웃
 function handleLogout() {
     localStorage.removeItem("access")
@@ -232,27 +222,29 @@ async function updatePosts(url) {
 }
 
 //게시글 삭제
-
-async function deletePosts(postId) {
+async function deletePosts(url) {
     if (confirm("작성하신 게시물을 삭제하시겠습니까?")) {
+        const urlParams = new URLSearchParams(url);
+        const postId = urlParams.get("post_id");
+
         let token = localStorage.getItem("access")
-    }
 
-    let token = localStorage.getItem("access")
+        const response = await fetch(`${backend_base_url}/posts/${postId}/`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            method: 'DELETE',
+        })
 
-    const response = await fetch(`${backend_base_url}/posts/${postId}/`, {
-        headers: {
-            'content-type': 'application/json',
-            "Authorization": `Bearer ${token}`
-        },
-        method: 'DELETE',
-    })
-
-    if (response.status == 204) {
-        alert("게시글 삭제 완료!")
-        window.location.replace(`${frontend_base_url}/`)
-    } else {
-        alert(response.statusText)
+        if (response.status == 204) {
+            alert("게시글 삭제 완료!")
+            window.location.replace(`${frontend_base_url}/`)
+        } else if (response.status == 403) {
+            alert("본인이 작성한 게시글만 삭제할 수 있습니다!")
+        } else {
+            alert(response.statusText)
+        }
     }
 }
 
@@ -420,7 +412,7 @@ async function likeClick() {
     })
     const response_json = await response.json()
 
-    //좋아요 하트 색 변경
+    //좋아요 하트 색 및 개수 변경
     if (response_json == "like") {
         clickLike.setAttribute("style", "display:flex;")
         clickDislike.setAttribute("style", "display:none;")
