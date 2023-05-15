@@ -89,15 +89,9 @@
                 </button>
             </span>
             <div class="count-like2">
-                <span class="count-like3" id="count-{{ post.id }}">좋아요 0개</span>
+                <span class="count-like3" id="count"></span>
             </div>
         </section>
-        <div class="col d-grid gap-2 d-md-flex justify-content-md-end p-0">
-            <button type="button" class="btn btn-primary" onclick="postUpdate(window.location.search)">수정</button>
-        </div>
-        <div class="col d-grid gap-2 d-md-flex justify-content-md-end p-0">
-            <button type="button" class="btn btn-primary" onclick="deletePosts(window.location.search)">삭제</button>
-        </div>
     </div>
     <div class="container p-0">
         <ul class="list-unstyled" id="comments-list"></ul>

@@ -78,7 +78,7 @@ async function loadPosts() {
     postTitle.innerText = response.title
     postContent.innerText = response.content
 
-    if (response.user_id === currentUserId) {
+    if (response.user === currentUserId) {
         editButton.style.display = "block";
         deleteButton.style.display = "block";
     } else {
@@ -147,7 +147,6 @@ window.onload = async function () {
 
     let token = localStorage.getItem("access")
 
-
     const my_respose = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`,{
         headers:{
             "Authorization" : `Bearer ${token}`
@@ -202,15 +201,16 @@ window.onload = async function () {
     }
     
     const count = document.getElementById("count")
-
-
-    let count_like = 1
-    for (let obj in response.like) {
-        console.log(response.like)
-        count_like += Number(obj)
-    }
-
-    count.innerText = `${count_like}개`
+    // let count_like = 0
+    // for (let obj in response.like) {
+    //     if (obj == '0') {
+    //         count_like += Number(obj) + 1
+    //     }
+    //     else {
+    //         count_like += Number(obj)
+    //     }
+    // }
+    count.innerText = `좋아요 ${response.like.length}개`
 
     const exist_post = await getPost(postId);
     console.log(exist_post)

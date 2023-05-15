@@ -162,11 +162,14 @@ async function createPost(url) {
         },
         body: formdata
     })
-
+    
     if (response.status == 200) {
         alert("글 작성 완료!")
         window.location.replace(`${frontend_base_url}/`);
-    } else {
+    } else if ((response.status == 400)) {
+        alert("제목, 내용, 별점은 필수항목입니다")
+    }
+    else {
         alert(response.statusText)
     }
 }
