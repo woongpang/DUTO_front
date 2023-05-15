@@ -139,10 +139,11 @@ function postList(posts, post_list) {
 
         //원래 별 띄우기
         for (let i = 1; i <= post.star; i++) {
-            document.getElementById(`rating${i}`).checked = true;
+            document.getElementById(`rating${i}`).checked = true
+            console.log(`rating${i}`)
         }
-
     });
+
 }
 
 // 공부 or 휴식 게시판 전체 게시글 보기 클릭 시 html에 있는 카테고리 이름을 가져와서 url에 카테고리명을 담아서 그 url로 이동시킴

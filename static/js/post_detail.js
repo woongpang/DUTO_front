@@ -148,7 +148,7 @@ window.onload = async function () {
 
     // 별점 보이기
     for (let i = 1; i <= post.star; i++) {
-        document.getElementById(`rating${i}`).checked = true;
+        document.getElementById(`rating${i}`).checked = true
     }
 
     await loadPosts(postId);
