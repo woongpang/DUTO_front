@@ -1,9 +1,4 @@
-let postId
-
-function handlefollowing(user_id) {
-    window.location.href = `${frontend_base_url}/users/profile.html?user_id=${user_id}`;
-}
-
+// 댓글 로드하는 함수
 async function loadComments(postId) {
     const response = await getComments(postId);
     const payload = JSON.parse(localStorage.getItem("payload"));

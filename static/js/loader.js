@@ -177,3 +177,8 @@ function handlePostButton(url) {
     }
     window.location.href = `${frontend_base_url}/posts/post_create.html?category=${category_pk}`
 }
+
+// 팔로잉 버튼 클릭 시 아래 url로 이동시킴
+function handlefollowing(user_id) {
+    window.location.href = `${frontend_base_url}/users/profile.html?user_id=${user_id}`;
+}

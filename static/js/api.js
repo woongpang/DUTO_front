@@ -308,12 +308,12 @@ async function modifyComment(postId, commentId, currentComment) {
     if (newComment !== null) { // 수정 내용이 null 이 아닌 경우
         let token = localStorage.getItem("access");
 
-        const response = await fetch(`${backend_base_url}/posts/${postId}/comments/${commentId}/`, {
-            method: 'PUT',
+        const response = await fetch(`${backend_base_url}/posts/comments/${commentId}/`, {
             headers: {
                 'content-type': 'application/json',
                 "Authorization": `Bearer ${token}`
             },
+            method: 'PUT',
             body: JSON.stringify({
                 "comment": newComment
             })
@@ -322,6 +322,10 @@ async function modifyComment(postId, commentId, currentComment) {
         if (response.status == 200) {
             alert("댓글 수정이 완료되었습니다!");
             loadComments(postId); // 댓글 목록을 다시 로드합니다.
+        } else if (response.status == 404) {
+            alert("존재하지 않는 댓글입니다!");
+        } else if (response.status == 403) {
+            alert("본인이 작성한 댓글만 수정할 수 있습니다");
         } else {
             alert(response.statusText);
         }
@@ -336,12 +340,12 @@ async function deleteComment(postId, commentId) {
     if (confirm("정말 삭제하시겠습니까?")) {
         let token = localStorage.getItem("access")
 
-        const response = await fetch(`${backend_base_url}/posts/${postId}/comments/${commentId}/`, {
-            method: 'DELETE',
+        const response = await fetch(`${backend_base_url}/posts/comments/${commentId}/`, {
             headers: {
                 'content-type': 'application/json',
                 "Authorization": `Bearer ${token}`
             },
+            method: 'DELETE',
             body: JSON.stringify({
                 "id": commentId,
             })
@@ -350,6 +354,10 @@ async function deleteComment(postId, commentId) {
         if (response.status == 204) {
             alert("댓글 삭제 완료!")
             loadComments(postId);
+        } else if (response.status == 404) {
+            alert("존재하지 않는 댓글입니다!");
+        } else if (response.status == 403) {
+            alert("본인이 작성한 댓글만 삭제할 수 있습니다");
         } else {
             alert(response.statusText)
         }
