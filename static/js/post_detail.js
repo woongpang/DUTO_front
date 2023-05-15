@@ -154,9 +154,7 @@ window.onload = async function () {
     count.innerText = `좋아요 ${post.like.length}개`
 
     // 별점 보이기
-    const exist_post = await getPost(postId);
-
-    for (let i = 1; i <= exist_post.star; i++) {
+    for (let i = 1; i <= post.star; i++) {
         document.getElementById(`rating${i}`).checked = true;
     }
 
