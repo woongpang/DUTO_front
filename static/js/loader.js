@@ -138,14 +138,10 @@ function postList(posts, post_list) {
         const newCardlabel5 = document.createElement("label")
         newCardlabel5.setAttribute("for", "rating5")
         newCardStar.appendChild(newCardlabel5)
-        console.log(post)
-
 
         //원래 별 띄우기
         for (let i = 1; i <= post.star; i++) {
             document.getElementById(`rating${i}`).checked = true;
-            console.log(document.getElementById(`rating${i}`).checked)
-            console.log(`현재:${document.data}`)
         }
 
     });

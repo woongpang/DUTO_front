@@ -72,10 +72,9 @@
         </div>
         <section class="like-i">
             <span class="like-i2">
-                <button class="like-i3" name="{{ post.id }}" id="like-button-{{ post.id }}" type="button"
-                    onclick="likeClick(window.location.search)">
+                <button class="like-i3" id="like-button" type="button" onclick="likeClick(window.location.search)">
                     <div class="bi-heart2" id="like-{{ post.id }}">
-                        <span class="like" style="display: none;">
+                        <span class="like" id="like" style="display:none;">
                             <svg aria-label="좋아요 취소" class="x1lliihq x1n2onr6" color="rgb(255, 48, 64)"
                                 fill="rgb(255, 48, 64)" height="24" role="img" viewBox="0 0 48 48" width="24">
                                 <title>좋아요 취소</title>
@@ -84,7 +83,7 @@
                                 </path>
                             </svg>
                         </span>
-                        <span class="dislike" style="display: flex;">
+                        <span class="dislike" id="dislike" style="display:flex;">
                             <svg aria-label="좋아요" class="x1lliihq x1n2onr6" color="rgb(38, 38, 38)"
                                 fill="rgb(38, 38, 38)" height="24" role="img" viewBox="0 0 24 24" width="24">
                                 <title>좋아요</title>

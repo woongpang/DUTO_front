@@ -54,6 +54,26 @@ async function handleLogin() {
     return response
 }
 
+// 유저 정보 조회
+async function getUser() {
+    const payload = localStorage.getItem("payload")
+    const payload_parse = JSON.parse(payload)
+    let token = localStorage.getItem("access")
+    const response = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
+        method: "GET",
+    })
+
+    if (response.status == 200) {
+        response_json = await response.json()
+        return response_json
+    } else {
+        alert(response.statusText)
+    }
+}
+
 // 뭐하는 애더라?
 async function handleMock() {
     const response = await fetch(`${backend_base_url}/users/mock/`, {
@@ -92,7 +112,6 @@ function checkNotLogin() {
 // 메인페이지 조회
 async function getAllPosts() {
     const response = await fetch(`${backend_base_url}/posts/`)
-    console.log(response)
 
     if (response.status == 200) {
         const response_json = await response.json()
@@ -164,7 +183,7 @@ async function createPost(url) {
         },
         body: formdata
     })
-    
+
     if (response.status == 200) {
         alert("글 작성 완료!")
         window.location.replace(`${frontend_base_url}/`);
@@ -383,25 +402,24 @@ async function unfollow() {
     const response_post = await getPost(postId);
     let token = localStorage.getItem("access")
 
-    const response = await fetch(`${backend_base_url}/users/${response_post.user}/follow/`, {
+    await fetch(`${backend_base_url}/users/${response_post.user}/follow/`, {
         method: 'POST',
         headers: {
             "Authorization": `Bearer ${token}`
         }
     })
     location.reload()
-
-    // const username = document.getElementById("followuser")
-    // username.remove()
 }
 
 // 좋아요 누르기
 async function likeClick() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
+    const post = await getPost(postId);
 
-    const response_post = await getPost(postId);
     let token = localStorage.getItem("access")
+    let clickLike = document.getElementById("like")
+    let clickDislike = document.getElementById("dislike")
 
     const response = await fetch(`${backend_base_url}/posts/${postId}/likes/`, {
         method: 'POST',
@@ -409,5 +427,20 @@ async function likeClick() {
             "Authorization": `Bearer ${token}`
         },
     })
-    location.reload()
+    const response_json = await response.json()
+
+    //좋아요 하트 색 변경
+    if (response_json == "좋아요") {
+        clickLike.setAttribute("style", "display:flex;")
+        clickDislike.setAttribute("style", "display:none;")
+        count.innerText = `좋아요 ${post.like.length + 1}개`
+    } else if (response_json == "좋아요 취소") {
+        clickLike.setAttribute("style", "display:none;")
+        clickDislike.setAttribute("style", "display:flex;")
+        count.innerText = `좋아요 ${post.like.length - 1}개`
+    }
+
+    // 좋아요 개수 보이기
+    // const count = document.getElementById("count")
+    // count.innerText = `좋아요 ${post.like.length}개`
 }
