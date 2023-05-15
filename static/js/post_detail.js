@@ -99,8 +99,13 @@ window.onload = async function () {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
 
+    const payload = JSON.parse(localStorage.getItem("payload"));
+    if (payload) {
+        user = await getUser();
+    } else {
+        user = null
+    }
     const post = await getPost(postId);
-    const user = await getUser();
 
     if (user) {
         const profileBox = document.getElementById("following")
@@ -132,17 +137,18 @@ window.onload = async function () {
                 newdiv.appendChild(followButton)
             }
         }
+        //좋아요 하트색 세팅
+        let like = document.getElementById("like")
+        let dislike = document.getElementById("dislike")
+        user.like_posts.forEach((obj) => {
+            if (postId == obj.id) {
+                like.setAttribute("style", "display:flex;")
+                dislike.setAttribute("style", "display:none;")
+            }
+        });
     }
 
-    //좋아요 하트색 및 개수 세팅
-    let like = document.getElementById("like")
-    let dislike = document.getElementById("dislike")
-    user.like_posts.forEach((obj) => {
-        if (postId == obj.id) {
-            like.setAttribute("style", "display:flex;")
-            dislike.setAttribute("style", "display:none;")
-        }
-    });
+    // 하트 개수 보이기
     const count = document.getElementById("count")
     count.innerText = `좋아요 ${post.like.length}개`
 

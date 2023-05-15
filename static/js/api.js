@@ -1,4 +1,4 @@
-const frontend_base_url = "http://127.0.0.1:5501"
+const frontend_base_url = "http://127.0.0.1:5500"
 const backend_base_url = "http://127.0.0.1:8000"
 
 // 회원가입
@@ -417,6 +417,9 @@ async function likeClick() {
             "Authorization": `Bearer ${token}`
         },
     })
+    if (response.status == 401) {
+        alert("로그인한 사용자만 좋아요를 누를 수 있습니다")
+    }
     const response_json = await response.json()
 
     //좋아요 하트 색 및 개수 변경
