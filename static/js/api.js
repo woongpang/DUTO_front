@@ -164,7 +164,7 @@ async function createPost(url) {
         },
         body: formdata
     })
-
+    
     if (response.status == 200) {
         alert("글 작성 완료!")
         window.location.replace(`${frontend_base_url}/`);

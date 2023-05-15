@@ -28,6 +28,31 @@ window.onload = async function () {
 
     console.log(my_json_posts)
 
+    const my_likes = await fetch(`${backend_base_url}/users/likes/`,{
+        headers:{
+            "Authorization" : `Bearer ${token}`
+        },
+        method:"GET",
+    })
+
+    const my_json_likes = await my_likes.json()
+    console.log(my_json_likes)
+    
+
+    my_json_likes.forEach((obj) => {
+        let mylikes = document.getElementById("likeposts")
+        let mylikeLi = document.createElement("li")
+        mylikeLi.setAttribute("class", 'nav-item')
+
+        let mypostBtn2 = document.createElement("button")
+        mypostBtn2.setAttribute("class", "nav-link btn")
+        mypostBtn2.setAttribute("onclick", `postDetail(${obj.id})`)
+        mypostBtn2.innerText = `${obj.title}`
+
+        mylikeLi.appendChild(mypostBtn2)
+        mylikes.appendChild(mylikeLi)
+    });
+
     my_json_posts.forEach((obj) => {
         console.log(obj.title)
         console.log(obj.id)
