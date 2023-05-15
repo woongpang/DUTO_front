@@ -41,7 +41,6 @@
 }
 
 .count-like2 {
-    display: flex;
     flex-direction: column;
     justify-content: flex-start;
     flex-grow: 1;
@@ -56,7 +55,6 @@
 }
 
 .count-like3 {
-    display: flex;
     font-weight: 600;
     font-size: 14px;
     line-height: 18px;

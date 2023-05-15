@@ -220,7 +220,7 @@ async function updatePosts(url) {
 async function deletePosts(postId) {
     if (confirm("작성하신 게시물을 삭제하시겠습니까?")) {
         let token = localStorage.getItem("access")
-
+    }
 
     let token = localStorage.getItem("access")
 
@@ -253,17 +253,6 @@ async function getPost(postId) {
     }
 }
 
-
-// 프로필 수정
-async function getUser() {
-    try {
-        const response = await fetch('/api/users/profile');
-        const user = await response.json();
-        return user;
-    } catch (error) {
-        console.error(error);
-    }
-}
 
 // 댓글 조회
 async function getComments(postId) {
@@ -359,3 +348,60 @@ async function deleteComment(postId, commentId) {
     }
 }
 
+// 팔로우
+async function follow(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("post_id");
+    
+    const response_post = await getPost(postId);
+    console.log(response_post.user)
+
+    let token = localStorage.getItem("access")
+
+    const response = await fetch(`${backend_base_url}/users/${response_post.user}/follow/`,{
+        method: 'POST',
+        headers:{
+            "Authorization" : `Bearer ${token}`
+        },
+        body:`${response_post.user}`
+    })
+    location.reload()
+}
+
+// 언팔로우
+async function unfollow(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("post_id");
+
+    const response_post = await getPost(postId);
+    let token = localStorage.getItem("access")
+
+    const response = await fetch(`${backend_base_url}/users/${response_post.user}/follow/`,{
+        method: 'POST',
+        headers:{
+            "Authorization" : `Bearer ${token}`
+        }
+    })
+    location.reload()
+    
+    // const username = document.getElementById("followuser")
+    // username.remove()
+}
+
+async function likeClick(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("post_id");
+
+    const response_post = await getPost(postId);
+    let token = localStorage.getItem("access")
+
+    const response = await fetch(`${backend_base_url}/posts/${postId}/likes/`,{
+        method: 'POST',
+        headers:{
+            "Authorization" : `Bearer ${token}`
+        },
+    })
+    location.reload()
+    // const username = document.getElementById("followuser")
+    // username.remove()
+}

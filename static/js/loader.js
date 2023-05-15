@@ -19,7 +19,7 @@ async function injectNavbar() {
         const payload_parse = JSON.parse(payload)
 
         const intro = document.getElementById("intro")
-        intro.innerText = `${payload_parse.name}님 안녕하세요!`
+        intro.innerText = `${payload_parse.username}`
 
         let navbarRight = document.getElementById("navbar-right")
         let newLi = document.createElement("li")
@@ -27,7 +27,8 @@ async function injectNavbar() {
 
         let logoutBtn = document.createElement("button")
         logoutBtn.setAttribute("class", "nav-link btn")
-        logoutBtn.innerText = "로그아웃"
+        logoutBtn.setAttribute("style", "font-size: 25px; margin: 80px 30px 0 10px;")
+        logoutBtn.innerText = "Logout"
         logoutBtn.setAttribute("onclick", "handleLogout()")
 
         newLi.appendChild(logoutBtn)
@@ -72,15 +73,89 @@ function postList(posts, post_list) {
         newCardBody.appendChild(newCardTile)
 
         post_list.appendChild(newCol)
-    });
-}
+        
+        const newCardStar = document.createElement("div")
+        newCardStar.setAttribute("class", "rating")
+        newCardStar.setAttribute("id", "star")
+        newCard.appendChild(newCardStar)
 
-// 전체게시글 리스트 보기
-window.onload = async function loadPosts() {
-    posts = await getAllPosts()
-    const post_list = document.getElementById("post-list")
-    console.log(posts)
-    postList(posts, post_list);
+        const newCardinputStar1 = document.createElement("input")
+        newCardinputStar1.setAttribute("class", "rate_radio")
+        newCardinputStar1.setAttribute("type", "checkbox")
+        newCardinputStar1.setAttribute("value", "1")
+        newCardinputStar1.setAttribute("id", "rating1")
+        newCardinputStar1.setAttribute("disabled", "")
+        newCardStar.appendChild(newCardinputStar1)
+
+        const newCardlabel1 = document.createElement("label")
+        newCardlabel1.setAttribute("for", "rating1")
+        newCardStar.appendChild(newCardlabel1)
+
+        const newCardinputStar2 = document.createElement("input")
+        newCardinputStar2.setAttribute("class", "rate_radio")
+        newCardinputStar2.setAttribute("type", "checkbox")
+        newCardinputStar2.setAttribute("value", "2")
+        newCardinputStar2.setAttribute("id", "rating2")
+        newCardinputStar2.setAttribute("disabled", "")
+        newCardStar.appendChild(newCardinputStar2)
+
+        const newCardlabel2 = document.createElement("label")
+        newCardlabel2.setAttribute("for", "rating2")
+        newCardStar.appendChild(newCardlabel2)
+
+        const newCardinputStar3 = document.createElement("input")
+        newCardinputStar3.setAttribute("class", "rate_radio")
+        newCardinputStar3.setAttribute("type", "checkbox")
+        newCardinputStar3.setAttribute("value", "3")
+        newCardinputStar3.setAttribute("id", "rating3")
+        newCardinputStar3.setAttribute("disabled", "")
+        newCardStar.appendChild(newCardinputStar3)
+
+        const newCardlabel3 = document.createElement("label")
+        newCardlabel3.setAttribute("for", "rating3")
+        newCardStar.appendChild(newCardlabel3)
+
+        const newCardinputStar4 = document.createElement("input")
+        newCardinputStar4.setAttribute("class", "rate_radio")
+        newCardinputStar4.setAttribute("type", "checkbox")
+        newCardinputStar4.setAttribute("value", "4")
+        newCardinputStar4.setAttribute("id", "rating4")
+        newCardinputStar4.setAttribute("disabled", "")
+        newCardStar.appendChild(newCardinputStar4)
+
+        const newCardlabel4 = document.createElement("label")
+        newCardlabel4.setAttribute("for", "rating4")
+        newCardStar.appendChild(newCardlabel4)
+
+        const newCardinputStar5 = document.createElement("input")
+        newCardinputStar5.setAttribute("class", "rate_radio")
+        newCardinputStar5.setAttribute("type", "checkbox")
+        newCardinputStar5.setAttribute("value", "5")
+        newCardinputStar5.setAttribute("id", "rating5")
+        newCardinputStar5.setAttribute("disabled", "")
+        newCardStar.appendChild(newCardinputStar5)
+
+        const newCardlabel5 = document.createElement("label")
+        newCardlabel5.setAttribute("for", "rating5")
+        newCardStar.appendChild(newCardlabel5)
+        console.log(post)
+        
+        //별 색깔 초기화
+        // for (let i = 1; i <= 5; i++) {
+        //     console.log(post.star)
+        //     document.getElementById(`rating${i}`).checked = false;
+        //     console.log(document)
+        // }
+
+
+        //원래 별 띄우기
+        for (let i = 1; i <= post.star; i++) {
+            document.getElementById(`rating${i}`).checked = true;
+            console.log(document.getElementById(`rating${i}`).checked)
+            console.log(`현재:${document.data}`)
+        }
+
+    });
 }
 
 // 공부 or 휴식 게시판 전체 게시글 보기 클릭 시 html에 있는 카테고리 이름을 가져와서 url에 카테고리명을 담아서 그 url로 이동시킴
@@ -101,9 +176,7 @@ function postDetail(post_id) {
 function postUpdate(url) {
     const urlParams = new URLSearchParams(url);
     console.log(url)
-    // console.log(urlParams)
     const post_id = urlParams.get("post_id");
-    // console.log(post_id)
     window.location.href = `${frontend_base_url}/posts/post_update.html?post_id=${post_id}`
 }
 
