@@ -138,10 +138,10 @@ function postList(posts, post_list) {
         newCardStar.appendChild(newCardlabel5)
 
         //원래 별 띄우기
-        for (let i = 1; i <= post.star; i++) {
-            document.getElementById(`rating${i}`).checked = true
-            console.log(`rating${i}`)
-        }
+        // for (let i = 1; i <= post.star; i++) {
+        //     document.getElementById(`rating${i}`).checked = true
+        //     console.log(`rating${i}`)
+        // }
     });
 
 }
