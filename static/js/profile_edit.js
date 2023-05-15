@@ -12,7 +12,6 @@ window.onload = async function () {
   })
 
   const myprofile_response = await my_profile_edit.json()
-  console.log(myprofile_response)
 
   const profile_username = document.getElementById("username")
   profile_username.setAttribute("value", `${myprofile_response.username}`)
@@ -49,5 +48,4 @@ async function handleUpdateButton() {
     })
   })
   window.location.replace(`${frontend_base_url}/users/profile.html`)
-  console.log(my_profile_modify)
 }

@@ -1,5 +1,3 @@
-console.log("상세게시글 js 로드됨")
-
 let postId
 
 function handlefollowing(user_id) {
@@ -20,7 +18,7 @@ async function loadComments(postId) {
 
     response.forEach((comment) => {
         let buttons = '';
-        console.log(comment.user)
+
         // 로그인한 사용자가 댓글 작성자와 일치하는 경우
         if (currentUserId === comment.user) {
             buttons = `
@@ -50,9 +48,9 @@ async function submitComment() {
     const postId = urlParams.get("post_id");
     const commentElement = document.getElementById("new-comment")
     const newComment = commentElement.value
-    console.log(`댓글 내용: ${newComment}`)
-    const response = await createComment(postId, newComment)
-    console.log(response)
+
+    await createComment(postId, newComment)
+
     commentElement.value = ""
 
     loadComments(postId)

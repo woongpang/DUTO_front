@@ -26,18 +26,14 @@ window.onload = async function () {
 
     const my_json_posts = await my_posts.json()
 
-    console.log(my_json_posts)
-
-    const my_likes = await fetch(`${backend_base_url}/users/likes/`,{
-        headers:{
-            "Authorization" : `Bearer ${token}`
+    const my_likes = await fetch(`${backend_base_url}/users/likes/`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
         },
-        method:"GET",
+        method: "GET",
     })
 
     const my_json_likes = await my_likes.json()
-    console.log(my_json_likes)
-    
 
     my_json_likes.forEach((obj) => {
         let mylikes = document.getElementById("likeposts")
@@ -54,8 +50,6 @@ window.onload = async function () {
     });
 
     my_json_posts.forEach((obj) => {
-        console.log(obj.title)
-        console.log(obj.id)
         let myPosts = document.getElementById("myposts")
         let myPostLi = document.createElement("li")
         myPostLi.setAttribute("class", 'nav-item')

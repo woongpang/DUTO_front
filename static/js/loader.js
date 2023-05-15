@@ -1,5 +1,3 @@
-console.log("loader 로드됨")
-
 // navbar.html을 가져옴
 // 로그인 되지 않은 상태에서는 글쓰기가 안 보이고, 로그인 된 상태라면 로그인이 안 보이고 로그아웃 버튼이 생김
 async function injectNavbar() {
@@ -164,7 +162,6 @@ function postDetail(post_id) {
 
 function postUpdate(url) {
     const urlParams = new URLSearchParams(url);
-    console.log(url)
     const post_id = urlParams.get("post_id");
     window.location.href = `${frontend_base_url}/posts/post_update.html?post_id=${post_id}`
 }

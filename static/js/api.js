@@ -1,10 +1,6 @@
 const frontend_base_url = "http://127.0.0.1:5501"
 const backend_base_url = "http://127.0.0.1:8000"
 
-window.onload = () => {
-    console.log("api.js 로딩됨")
-}
-
 // 회원가입
 async function handleSignin() {
     const username = document.getElementById("username").value
@@ -14,7 +10,6 @@ async function handleSignin() {
     const realname = document.getElementById("realname").value
     const age = document.getElementById("age").value
     const introduction = document.getElementById("introduction").value
-    console.log(username, password)
 
     const response = await fetch(`${backend_base_url}/users/signup/`, {
         headers: {
@@ -82,7 +77,6 @@ async function handleMock() {
         },
         method: 'GET',
     })
-    console.log(response)
 }
 
 // 로그아웃
@@ -124,7 +118,6 @@ async function getAllPosts() {
 // 카테고리별 전체 게시글 조회
 async function getPosts(categoryName) {
     const response = await fetch(`${backend_base_url}/posts/category/${categoryName}/`)
-    console.log(response)
 
     if (response.status == 200) {
         const response_json = await response.json()
@@ -144,7 +137,6 @@ async function getFollowingPosts(categoryName) {
             "Authorization": `Bearer ${token}`
         },
     })
-    console.log(response)
 
     if (response.status == 200) {
         const response_json = await response.json()
@@ -378,19 +370,17 @@ async function deleteComment(postId, commentId) {
 async function follow() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
-
-    const response_post = await getPost(postId);
-    console.log(response_post.user)
+    const post = await getPost(postId);
 
     let token = localStorage.getItem("access")
 
-    const response = await fetch(`${backend_base_url}/users/${response_post.user}/follow/`, {
+    await fetch(`${backend_base_url}/users/${post.user}/follow/`, {
         method: 'POST',
         headers: {
             "Authorization": `Bearer ${token}`
         },
-        body: `${response_post.user}`
     })
+
     location.reload()
 }
 
@@ -398,16 +388,17 @@ async function follow() {
 async function unfollow() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
+    const post = await getPost(postId);
 
-    const response_post = await getPost(postId);
     let token = localStorage.getItem("access")
 
-    await fetch(`${backend_base_url}/users/${response_post.user}/follow/`, {
+    await fetch(`${backend_base_url}/users/${post.user}/follow/`, {
         method: 'POST',
         headers: {
             "Authorization": `Bearer ${token}`
         }
     })
+
     location.reload()
 }
 
@@ -430,17 +421,13 @@ async function likeClick() {
     const response_json = await response.json()
 
     //좋아요 하트 색 변경
-    if (response_json == "좋아요") {
+    if (response_json == "like") {
         clickLike.setAttribute("style", "display:flex;")
         clickDislike.setAttribute("style", "display:none;")
         count.innerText = `좋아요 ${post.like.length + 1}개`
-    } else if (response_json == "좋아요 취소") {
+    } else if (response_json == "dislike") {
         clickLike.setAttribute("style", "display:none;")
         clickDislike.setAttribute("style", "display:flex;")
         count.innerText = `좋아요 ${post.like.length - 1}개`
     }
-
-    // 좋아요 개수 보이기
-    // const count = document.getElementById("count")
-    // count.innerText = `좋아요 ${post.like.length}개`
 }
