@@ -9,8 +9,11 @@ function handlefollowing(user_id) {
 async function loadComments(postId) {
     const response = await getComments(postId);
     const payload = JSON.parse(localStorage.getItem("payload"));
-    const currentUserId = payload.username;
-
+    if (payload) {
+        currentUserId = payload.username;
+    } else {
+        currentUserId = null
+    }
 
     const commentsList = document.getElementById("comments-list");
     commentsList.innerHTML = "";
@@ -41,7 +44,7 @@ async function loadComments(postId) {
     });
 }
 
-// 댓글 등록
+// 댓글 등록 버튼
 async function submitComment() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
@@ -60,12 +63,11 @@ async function loadPosts() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
     const payload = JSON.parse(localStorage.getItem("payload"));
-    const currentUserId = payload.username;
-    
-    const response = await getPost(postId);
-
-    // const postUserid = document.getElementById("post-user")
-    // postUserid.setAttribute("onclick", `handleProfile(${response.id})`)
+    if (payload) {
+        currentUserId = payload.username;
+    } else {
+        currentUserId = null
+    }
 
     const postuser = document.getElementById("post-user")
     const postTitle = document.getElementById("post-title")
@@ -74,11 +76,12 @@ async function loadPosts() {
     const editButton = document.getElementById("edit-button")
     const deleteButton = document.getElementById("delete-button")
 
+    const response = await getPost(postId);
     postuser.innerHTML = response.user
     postTitle.innerText = response.title
     postContent.innerText = response.content
 
-    if (response.user_id === currentUserId) {
+    if (response.user === currentUserId) {
         editButton.style.display = "block";
         deleteButton.style.display = "block";
     } else {
@@ -98,122 +101,69 @@ async function loadPosts() {
     postImage.appendChild(newImage)
 }
 
-//댓글 삭제
-async function deleteComment(postId, commentId) {
-    if (confirm("정말 삭제하시겠습니까?")) {
-        let token = localStorage.getItem("access")
-
-        const response = await fetch(`${backend_base_url}/posts/${postId}/comments/${commentId}/`, {
-            method: 'DELETE',
-            headers: {
-                'content-type': 'application/json',
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                "id": commentId,
-            })
-        })
-
-        if (response.status == 204) {
-            alert("댓글 삭제 완료!")
-            loadComments(postId);
-        } else {
-            alert(response.statusText)
-        }
-    } else {
-        loadComments(postId);
-    }
-}
-
 
 window.onload = async function () {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
-    
-    const response = await getPost(postId);
-    // 팔로우 기능
 
-    // const followBtn = document.createElement("button")
-    // followBtn.innerText = "팔로우"
-    // profileBox.append(followBtn)
+    const response = await getPost(postId);
 
     const payload = localStorage.getItem("payload")
-    const payload_parse = JSON.parse(payload)
+    if (payload) {
+        const payload_parse = JSON.parse(payload)
 
-    const profileBox = document.getElementById("following")
-    let newdiv = document.createElement("div")
-    newdiv.setAttribute("style", "font-size: 20px; margin: 20px") 
-    profileBox.appendChild(newdiv)
+        const profileBox = document.getElementById("following")
+        let newdiv = document.createElement("div")
+        newdiv.setAttribute("style", "font-size: 20px; margin: 20px")
+        profileBox.appendChild(newdiv)
 
-    let token = localStorage.getItem("access")
+        let token = localStorage.getItem("access")
 
 
-    const my_respose = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`,{
-        headers:{
-            "Authorization" : `Bearer ${token}`
-        },
-        method:"GET",
-    })
-    
-    const my_json_response = await my_respose.json()
-    console.log("1", my_json_response)
-    console.log("2", my_json_response.followings)
-    console.log("3", payload_parse.username)
-    console.log("4", my_json_response.id)
+        const my_respose = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            method: "GET",
+        })
+        const my_json_response = await my_respose.json()
+        console.log("1", my_json_response)
+        console.log("2", my_json_response.followings)
+        console.log("3", payload_parse.username)
+        console.log("4", my_json_response.id)
 
-    let sameid = null;
-    my_json_response.followings.forEach((obj) => {
-        if (obj == response.user) {
-            sameid = obj;
-            return sameid;
+        let sameid = null;
+        my_json_response.followings.forEach((obj) => {
+            if (obj == response.user) {
+                sameid = obj;
+                return sameid;
+            }
+        });
+
+        if (response.user != payload_parse.username) {
+            if (sameid) {
+                let unfollowButton = document.createElement("button")
+                unfollowButton.setAttribute("class", "nav-link btn")
+                unfollowButton.setAttribute("onclick", "unfollow()")
+                unfollowButton.innerText = "unfollow"
+                newdiv.appendChild(unfollowButton)
+            }
+            else {
+                let followButton = document.createElement("button")
+                followButton.setAttribute("class", "nav-link btn")
+                followButton.setAttribute("onclick", "follow()")
+                followButton.innerText = "follow"
+                newdiv.appendChild(followButton)
+            }
         }
-    });
-
-
-
-    // for (let obj in my_json_response.followings) {
-    //     if(obj == payload_parse.user_id){
-    //         sameid = obj
-    //         console.log(obj)
-    //         return sameid
-    //     }
-    // }
-
-    if (response.user!=payload_parse.username){
-        if(sameid){
-            let unfollowButton = document.createElement("button")
-            unfollowButton.setAttribute("class", "nav-link btn")
-            unfollowButton.setAttribute("onclick", "unfollow()")
-            unfollowButton.innerText = "unfollow"
-            newdiv.appendChild(unfollowButton)
-            // const follower = document.getElementById("follower")
-            // const newDiv = document.createElement("div")
-            // newDiv.innerHTML = payload_parse.username
-            // newDiv.setAttribute("id", "followuser")
-            // follower.append(newDiv)
-        }
-        else{
-            let followButton = document.createElement("button")
-            followButton.setAttribute("class", "nav-link btn")
-            followButton.setAttribute("onclick", "follow()")
-            followButton.innerText = "follow"
-            newdiv.appendChild(followButton)
-        } 
     }
-    
+
+    // 좋아요 개수 보이기
     const count = document.getElementById("count")
+    count.innerText = `좋아요 ${response.like.length}개`
 
-
-    let count_like = 1
-    for (let obj in response.like) {
-        console.log(response.like)
-        count_like += Number(obj)
-    }
-
-    count.innerText = `${count_like}개`
-
+    // 별점 보이기
     const exist_post = await getPost(postId);
-    console.log(exist_post)
 
     for (let i = 1; i <= exist_post.star; i++) {
         document.getElementById(`rating${i}`).checked = true;
@@ -221,6 +171,4 @@ window.onload = async function () {
 
     await loadPosts(postId);
     await loadComments(postId);
-
-    
 }

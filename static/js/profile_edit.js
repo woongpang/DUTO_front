@@ -1,19 +1,19 @@
 
-window.onload = async function() {
+window.onload = async function () {
   const payload = localStorage.getItem("payload")
   const payload_parse = JSON.parse(payload)
   let token = localStorage.getItem("access")
-  
-  const my_profile_edit = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`,{
-        headers:{
-            "Authorization" : `Bearer ${token}`
-        },
-        method:"GET",
+
+  const my_profile_edit = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`, {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    },
+    method: "GET",
   })
 
   const myprofile_response = await my_profile_edit.json()
   console.log(myprofile_response)
-  
+
   const profile_username = document.getElementById("username")
   profile_username.setAttribute("value", `${myprofile_response.username}`)
   const profile_email = document.getElementById("email")
@@ -27,8 +27,6 @@ window.onload = async function() {
 
 };
 
-
-
 async function handleUpdateButton() {
   const payload = localStorage.getItem("payload")
   const payload_parse = JSON.parse(payload)
@@ -40,16 +38,16 @@ async function handleUpdateButton() {
 
   const my_profile_modify = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`, {
     headers: {
-      "Authorization" : `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
       'Content-Type': 'application/json'
     },
-      method: 'PUT',
-      body: JSON.stringify({
-        name: name,
-        age: age,
-        introduction: introduction
-      })
+    method: 'PUT',
+    body: JSON.stringify({
+      name: name,
+      age: age,
+      introduction: introduction
     })
-    window.location.replace(`${frontend_base_url}/users/profile.html`)
-    console.log(my_profile_modify)
+  })
+  window.location.replace(`${frontend_base_url}/users/profile.html`)
+  console.log(my_profile_modify)
 }

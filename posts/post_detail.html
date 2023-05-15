@@ -23,7 +23,7 @@
 
 <body>
     <header></header>
-    
+
     <div class="container border border-dark">
         <!-- <h5 id="post-title" class="mb-3"></h5> -->
         <div>
@@ -33,7 +33,7 @@
             </h1>
         </div>
         <div class="row row-cols-1 row-cols-md-2" id="post" style="clear: both;">
-            
+
             <div id="post-image" class="col"></div>
             <div class="container">
                 <div id="post-title" class="mb-5 fs-2"></div>
@@ -42,20 +42,28 @@
                     <div class="warning_msg"></div>
                     <div class="rating" id="star" style="margin-top: 450px;">
                         <!-- 해당 별점을 클릭하면 해당 별과 그 왼쪽의 모든 별의 체크박스에 checked 적용 -->
-                        <input type="checkbox" name="rating" id="rating1" value="1" class="rate_radio" title="1점" disabled>
+                        <input type="checkbox" name="rating" id="rating1" value="1" class="rate_radio" title="1점"
+                            disabled>
                         <label for="rating1"></label>
-                        <input type="checkbox" name="rating" id="rating2" value="2" class="rate_radio" title="2점" disabled>
+                        <input type="checkbox" name="rating" id="rating2" value="2" class="rate_radio" title="2점"
+                            disabled>
                         <label for="rating2"></label>
-                        <input type="checkbox" name="rating" id="rating3" value="3" class="rate_radio" title="3점" disabled>
+                        <input type="checkbox" name="rating" id="rating3" value="3" class="rate_radio" title="3점"
+                            disabled>
                         <label for="rating3"></label>
-                        <input type="checkbox" name="rating" id="rating4" value="4" class="rate_radio" title="4점" disabled>
+                        <input type="checkbox" name="rating" id="rating4" value="4" class="rate_radio" title="4점"
+                            disabled>
                         <label for="rating4"></label>
-                        <input type="checkbox" name="rating" id="rating5" value="5" class="rate_radio" title="5점" disabled>
+                        <input type="checkbox" name="rating" id="rating5" value="5" class="rate_radio" title="5점"
+                            disabled>
                         <label for="rating5"></label>
-                        <span class="col d-grid gap-2 d-md-flex justify-content-md-end p-0" style="float: right; margin-top: 20px">
-                            <button type="button" class="btn btn-primary" id="edit-button" onclick="postUpdate(window.location.search)" >수정</button>
+                        <span class="col d-grid gap-2 d-md-flex justify-content-md-end p-0"
+                            style="float: right; margin-top: 20px">
+                            <button type="button" class="btn btn-primary" id="edit-button"
+                                onclick="postUpdate(window.location.search)">수정</button>
                             <span class="col d-grid gap-2 d-md-flex justify-content-md-end p-0" style="float: right;">
-                                <button type="button" class="btn btn-primary" id="delete-button" onclick="deletePosts(window.location.search)">삭제</button>
+                                <button type="button" class="btn btn-primary" id="delete-button"
+                                    onclick="deletePosts(window.location.search)">삭제</button>
                             </span>
                         </span>
                     </div>
@@ -89,15 +97,9 @@
                 </button>
             </span>
             <div class="count-like2">
-                <span class="count-like3" id="count-{{ post.id }}">좋아요 0개</span>
+                <span class="count-like3" id="count"></span>
             </div>
         </section>
-        <div class="col d-grid gap-2 d-md-flex justify-content-md-end p-0">
-            <button type="button" class="btn btn-primary" onclick="postUpdate(window.location.search)">수정</button>
-        </div>
-        <div class="col d-grid gap-2 d-md-flex justify-content-md-end p-0">
-            <button type="button" class="btn btn-primary" onclick="deletePosts(window.location.search)">삭제</button>
-        </div>
     </div>
     <div class="container p-0">
         <ul class="list-unstyled" id="comments-list"></ul>

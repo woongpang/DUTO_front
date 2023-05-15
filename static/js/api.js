@@ -130,6 +130,8 @@ async function getFollowingPosts(categoryName) {
     if (response.status == 200) {
         const response_json = await response.json()
         return response_json
+    } else if (response.status == 401) {
+        alert("로그인이 필요한 페이지입니다")
     } else {
         alert("불러오는 데 실패했습니다")
     }
@@ -166,7 +168,10 @@ async function createPost(url) {
     if (response.status == 200) {
         alert("글 작성 완료!")
         window.location.replace(`${frontend_base_url}/`);
-    } else {
+    } else if ((response.status == 400)) {
+        alert("제목, 내용, 별점은 필수항목입니다")
+    }
+    else {
         alert(response.statusText)
     }
 }
@@ -266,7 +271,7 @@ async function getComments(postId) {
     }
 }
 
-// 등록된 댓글 DB에 저장
+// 댓글 작성
 async function createComment(postId, newComment) {
 
     let token = localStorage.getItem("access")
@@ -286,6 +291,8 @@ async function createComment(postId, newComment) {
     if (response.status == 200) {
         response_json = await response.json()
         return response_json
+    } else if (response.status == 401) {
+        alert("로그인한 사용자만 댓글을 등록할 수 있습니다")
     } else {
         alert(response.statusText)
     }
@@ -349,59 +356,58 @@ async function deleteComment(postId, commentId) {
 }
 
 // 팔로우
-async function follow(){
+async function follow() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
-    
+
     const response_post = await getPost(postId);
     console.log(response_post.user)
 
     let token = localStorage.getItem("access")
 
-    const response = await fetch(`${backend_base_url}/users/${response_post.user}/follow/`,{
+    const response = await fetch(`${backend_base_url}/users/${response_post.user}/follow/`, {
         method: 'POST',
-        headers:{
-            "Authorization" : `Bearer ${token}`
+        headers: {
+            "Authorization": `Bearer ${token}`
         },
-        body:`${response_post.user}`
+        body: `${response_post.user}`
     })
     location.reload()
 }
 
 // 언팔로우
-async function unfollow(){
+async function unfollow() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
 
     const response_post = await getPost(postId);
     let token = localStorage.getItem("access")
 
-    const response = await fetch(`${backend_base_url}/users/${response_post.user}/follow/`,{
+    const response = await fetch(`${backend_base_url}/users/${response_post.user}/follow/`, {
         method: 'POST',
-        headers:{
-            "Authorization" : `Bearer ${token}`
+        headers: {
+            "Authorization": `Bearer ${token}`
         }
     })
     location.reload()
-    
+
     // const username = document.getElementById("followuser")
     // username.remove()
 }
 
-async function likeClick(){
+// 좋아요 누르기
+async function likeClick() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
 
     const response_post = await getPost(postId);
     let token = localStorage.getItem("access")
 
-    const response = await fetch(`${backend_base_url}/posts/${postId}/likes/`,{
+    const response = await fetch(`${backend_base_url}/posts/${postId}/likes/`, {
         method: 'POST',
-        headers:{
-            "Authorization" : `Bearer ${token}`
+        headers: {
+            "Authorization": `Bearer ${token}`
         },
     })
     location.reload()
-    // const username = document.getElementById("followuser")
-    // username.remove()
 }

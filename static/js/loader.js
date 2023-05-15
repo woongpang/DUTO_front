@@ -73,7 +73,7 @@ function postList(posts, post_list) {
         newCardBody.appendChild(newCardTile)
 
         post_list.appendChild(newCol)
-        
+
         const newCardStar = document.createElement("div")
         newCardStar.setAttribute("class", "rating")
         newCardStar.setAttribute("id", "star")
@@ -139,13 +139,6 @@ function postList(posts, post_list) {
         newCardlabel5.setAttribute("for", "rating5")
         newCardStar.appendChild(newCardlabel5)
         console.log(post)
-        
-        //별 색깔 초기화
-        // for (let i = 1; i <= 5; i++) {
-        //     console.log(post.star)
-        //     document.getElementById(`rating${i}`).checked = false;
-        //     console.log(document)
-        // }
 
 
         //원래 별 띄우기
