@@ -1,5 +1,3 @@
-console.log("loader 로드됨")
-
 // navbar.html을 가져옴
 // 로그인 되지 않은 상태에서는 글쓰기가 안 보이고, 로그인 된 상태라면 로그인이 안 보이고 로그아웃 버튼이 생김
 async function injectNavbar() {
@@ -138,17 +136,14 @@ function postList(posts, post_list) {
         const newCardlabel5 = document.createElement("label")
         newCardlabel5.setAttribute("for", "rating5")
         newCardStar.appendChild(newCardlabel5)
-        console.log(post)
-
 
         //원래 별 띄우기
-        for (let i = 1; i <= post.star; i++) {
-            document.getElementById(`rating${i}`).checked = true;
-            console.log(document.getElementById(`rating${i}`).checked)
-            console.log(`현재:${document.data}`)
-        }
-
+        // for (let i = 1; i <= post.star; i++) {
+        //     document.getElementById(`rating${i}`).checked = true
+        //     console.log(`rating${i}`)
+        // }
     });
+
 }
 
 // 공부 or 휴식 게시판 전체 게시글 보기 클릭 시 html에 있는 카테고리 이름을 가져와서 url에 카테고리명을 담아서 그 url로 이동시킴
@@ -168,7 +163,6 @@ function postDetail(post_id) {
 
 function postUpdate(url) {
     const urlParams = new URLSearchParams(url);
-    console.log(url)
     const post_id = urlParams.get("post_id");
     window.location.href = `${frontend_base_url}/posts/post_update.html?post_id=${post_id}`
 }
@@ -183,4 +177,9 @@ function handlePostButton(url) {
         category_pk = 2
     }
     window.location.href = `${frontend_base_url}/posts/post_create.html?category=${category_pk}`
+}
+
+// 팔로잉 버튼 클릭 시 아래 url로 이동시킴
+function handlefollowing(user_id) {
+    window.location.href = `${frontend_base_url}/users/profile.html?user_id=${user_id}`;
 }

@@ -11,7 +11,7 @@ Rating.prototype.setRate = function (newrate) {
     this.rate = newrate;
     const star = document.getElementById("star")
     star.setAttribute("value", this.rate)
-    console.log(this.rate)
+
     let items = document.querySelectorAll('.rate_radio');
     items.forEach(function (item, idx) {
         if (idx < newrate) {

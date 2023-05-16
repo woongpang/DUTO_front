@@ -1,9 +1,5 @@
-const frontend_base_url = "http://127.0.0.1:5501"
+const frontend_base_url = "http://127.0.0.1:5500"
 const backend_base_url = "http://127.0.0.1:8000"
-
-window.onload = () => {
-    console.log("api.js 로딩됨")
-}
 
 // 회원가입
 async function handleSignin() {
@@ -14,7 +10,6 @@ async function handleSignin() {
     const realname = document.getElementById("realname").value
     const age = document.getElementById("age").value
     const introduction = document.getElementById("introduction").value
-    console.log(username, password)
 
     const response = await fetch(`${backend_base_url}/users/signup/`, {
         headers: {
@@ -54,15 +49,24 @@ async function handleLogin() {
     return response
 }
 
-// 뭐하는 애더라?
-async function handleMock() {
-    const response = await fetch(`${backend_base_url}/users/mock/`, {
+// 유저 정보 조회
+async function getUser() {
+    const payload = localStorage.getItem("payload")
+    const payload_parse = JSON.parse(payload)
+    let token = localStorage.getItem("access")
+    const response = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`, {
         headers: {
-            "Authorization": "Bearer " + localStorage.getItem("access")
+            "Authorization": `Bearer ${token}`
         },
-        method: 'GET',
+        method: "GET",
     })
-    console.log(response)
+
+    if (response.status == 200) {
+        response_json = await response.json()
+        return response_json
+    } else {
+        alert(response.statusText)
+    }
 }
 
 // 로그아웃
@@ -92,7 +96,6 @@ function checkNotLogin() {
 // 메인페이지 조회
 async function getAllPosts() {
     const response = await fetch(`${backend_base_url}/posts/`)
-    console.log(response)
 
     if (response.status == 200) {
         const response_json = await response.json()
@@ -105,7 +108,6 @@ async function getAllPosts() {
 // 카테고리별 전체 게시글 조회
 async function getPosts(categoryName) {
     const response = await fetch(`${backend_base_url}/posts/category/${categoryName}/`)
-    console.log(response)
 
     if (response.status == 200) {
         const response_json = await response.json()
@@ -125,7 +127,6 @@ async function getFollowingPosts(categoryName) {
             "Authorization": `Bearer ${token}`
         },
     })
-    console.log(response)
 
     if (response.status == 200) {
         const response_json = await response.json()
@@ -164,7 +165,7 @@ async function createPost(url) {
         },
         body: formdata
     })
-    
+
     if (response.status == 200) {
         alert("글 작성 완료!")
         window.location.replace(`${frontend_base_url}/`);
@@ -221,27 +222,29 @@ async function updatePosts(url) {
 }
 
 //게시글 삭제
-
-async function deletePosts(postId) {
+async function deletePosts(url) {
     if (confirm("작성하신 게시물을 삭제하시겠습니까?")) {
+        const urlParams = new URLSearchParams(url);
+        const postId = urlParams.get("post_id");
+
         let token = localStorage.getItem("access")
-    }
 
-    let token = localStorage.getItem("access")
+        const response = await fetch(`${backend_base_url}/posts/${postId}/`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            method: 'DELETE',
+        })
 
-    const response = await fetch(`${backend_base_url}/posts/${postId}/`, {
-        headers: {
-            'content-type': 'application/json',
-            "Authorization": `Bearer ${token}`
-        },
-        method: 'DELETE',
-    })
-
-    if (response.status == 204) {
-        alert("게시글 삭제 완료!")
-        window.location.replace(`${frontend_base_url}/`)
-    } else {
-        alert(response.statusText)
+        if (response.status == 204) {
+            alert("게시글 삭제 완료!")
+            window.location.replace(`${frontend_base_url}/`)
+        } else if (response.status == 403) {
+            alert("본인이 작성한 게시글만 삭제할 수 있습니다!")
+        } else {
+            alert(response.statusText)
+        }
     }
 }
 
@@ -305,12 +308,12 @@ async function modifyComment(postId, commentId, currentComment) {
     if (newComment !== null) { // 수정 내용이 null 이 아닌 경우
         let token = localStorage.getItem("access");
 
-        const response = await fetch(`${backend_base_url}/posts/${postId}/comments/${commentId}/`, {
-            method: 'PUT',
+        const response = await fetch(`${backend_base_url}/posts/comments/${commentId}/`, {
             headers: {
                 'content-type': 'application/json',
                 "Authorization": `Bearer ${token}`
             },
+            method: 'PUT',
             body: JSON.stringify({
                 "comment": newComment
             })
@@ -319,6 +322,10 @@ async function modifyComment(postId, commentId, currentComment) {
         if (response.status == 200) {
             alert("댓글 수정이 완료되었습니다!");
             loadComments(postId); // 댓글 목록을 다시 로드합니다.
+        } else if (response.status == 404) {
+            alert("존재하지 않는 댓글입니다!");
+        } else if (response.status == 403) {
+            alert("본인이 작성한 댓글만 수정할 수 있습니다");
         } else {
             alert(response.statusText);
         }
@@ -327,18 +334,17 @@ async function modifyComment(postId, commentId, currentComment) {
     }
 }
 
-
 //댓글 삭제
 async function deleteComment(postId, commentId) {
     if (confirm("정말 삭제하시겠습니까?")) {
         let token = localStorage.getItem("access")
 
-        const response = await fetch(`${backend_base_url}/posts/${postId}/comments/${commentId}/`, {
-            method: 'DELETE',
+        const response = await fetch(`${backend_base_url}/posts/comments/${commentId}/`, {
             headers: {
                 'content-type': 'application/json',
                 "Authorization": `Bearer ${token}`
             },
+            method: 'DELETE',
             body: JSON.stringify({
                 "id": commentId,
             })
@@ -347,6 +353,10 @@ async function deleteComment(postId, commentId) {
         if (response.status == 204) {
             alert("댓글 삭제 완료!")
             loadComments(postId);
+        } else if (response.status == 404) {
+            alert("존재하지 않는 댓글입니다!");
+        } else if (response.status == 403) {
+            alert("본인이 작성한 댓글만 삭제할 수 있습니다");
         } else {
             alert(response.statusText)
         }
@@ -359,19 +369,17 @@ async function deleteComment(postId, commentId) {
 async function follow() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
-
-    const response_post = await getPost(postId);
-    console.log(response_post.user)
+    const post = await getPost(postId);
 
     let token = localStorage.getItem("access")
 
-    const response = await fetch(`${backend_base_url}/users/${response_post.user}/follow/`, {
+    await fetch(`${backend_base_url}/users/${post.user}/follow/`, {
         method: 'POST',
         headers: {
             "Authorization": `Bearer ${token}`
         },
-        body: `${response_post.user}`
     })
+
     location.reload()
 }
 
@@ -379,29 +387,29 @@ async function follow() {
 async function unfollow() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
+    const post = await getPost(postId);
 
-    const response_post = await getPost(postId);
     let token = localStorage.getItem("access")
 
-    const response = await fetch(`${backend_base_url}/users/${response_post.user}/follow/`, {
+    await fetch(`${backend_base_url}/users/${post.user}/follow/`, {
         method: 'POST',
         headers: {
             "Authorization": `Bearer ${token}`
         }
     })
-    location.reload()
 
-    // const username = document.getElementById("followuser")
-    // username.remove()
+    location.reload()
 }
 
 // 좋아요 누르기
 async function likeClick() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
+    const post = await getPost(postId);
 
-    const response_post = await getPost(postId);
     let token = localStorage.getItem("access")
+    let clickLike = document.getElementById("like")
+    let clickDislike = document.getElementById("dislike")
 
     const response = await fetch(`${backend_base_url}/posts/${postId}/likes/`, {
         method: 'POST',
@@ -409,5 +417,19 @@ async function likeClick() {
             "Authorization": `Bearer ${token}`
         },
     })
-    location.reload()
+    if (response.status == 401) {
+        alert("로그인한 사용자만 좋아요를 누를 수 있습니다")
+    }
+    const response_json = await response.json()
+
+    //좋아요 하트 색 및 개수 변경
+    if (response_json == "like") {
+        clickLike.setAttribute("style", "display:flex;")
+        clickDislike.setAttribute("style", "display:none;")
+        count.innerText = `좋아요 ${post.like.length + 1}개`
+    } else if (response_json == "dislike") {
+        clickLike.setAttribute("style", "display:none;")
+        clickDislike.setAttribute("style", "display:flex;")
+        count.innerText = `좋아요 ${post.like.length - 1}개`
+    }
 }

@@ -1,11 +1,4 @@
-console.log("상세게시글 js 로드됨")
-
-let postId
-
-function handlefollowing(user_id) {
-    window.location.href = `${frontend_base_url}/users/profile.html?user_id=${user_id}`;
-}
-
+// 댓글 로드하는 함수
 async function loadComments(postId) {
     const response = await getComments(postId);
     const payload = JSON.parse(localStorage.getItem("payload"));
@@ -20,7 +13,7 @@ async function loadComments(postId) {
 
     response.forEach((comment) => {
         let buttons = '';
-        console.log(comment.user)
+
         // 로그인한 사용자가 댓글 작성자와 일치하는 경우
         if (currentUserId === comment.user) {
             buttons = `
@@ -50,9 +43,9 @@ async function submitComment() {
     const postId = urlParams.get("post_id");
     const commentElement = document.getElementById("new-comment")
     const newComment = commentElement.value
-    console.log(`댓글 내용: ${newComment}`)
-    const response = await createComment(postId, newComment)
-    console.log(response)
+
+    await createComment(postId, newComment)
+
     commentElement.value = ""
 
     loadComments(postId)
@@ -106,41 +99,29 @@ window.onload = async function () {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
 
-    const response = await getPost(postId);
-
-    const payload = localStorage.getItem("payload")
+    const payload = JSON.parse(localStorage.getItem("payload"));
     if (payload) {
-        const payload_parse = JSON.parse(payload)
+        user = await getUser();
+    } else {
+        user = null
+    }
+    const post = await getPost(postId);
 
+    if (user) {
         const profileBox = document.getElementById("following")
         let newdiv = document.createElement("div")
         newdiv.setAttribute("style", "font-size: 20px; margin: 20px")
         profileBox.appendChild(newdiv)
 
-        let token = localStorage.getItem("access")
-
-
-        const my_respose = await fetch(`${backend_base_url}/users/${payload_parse.user_id}/`, {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            },
-            method: "GET",
-        })
-        const my_json_response = await my_respose.json()
-        console.log("1", my_json_response)
-        console.log("2", my_json_response.followings)
-        console.log("3", payload_parse.username)
-        console.log("4", my_json_response.id)
-
         let sameid = null;
-        my_json_response.followings.forEach((obj) => {
-            if (obj == response.user) {
+        user.followings.forEach((obj) => {
+            if (obj == post.user) {
                 sameid = obj;
                 return sameid;
             }
         });
 
-        if (response.user != payload_parse.username) {
+        if (post.user != user.username) {
             if (sameid) {
                 let unfollowButton = document.createElement("button")
                 unfollowButton.setAttribute("class", "nav-link btn")
@@ -156,17 +137,24 @@ window.onload = async function () {
                 newdiv.appendChild(followButton)
             }
         }
+        //좋아요 하트색 세팅
+        let like = document.getElementById("like")
+        let dislike = document.getElementById("dislike")
+        user.like_posts.forEach((obj) => {
+            if (postId == obj.id) {
+                like.setAttribute("style", "display:flex;")
+                dislike.setAttribute("style", "display:none;")
+            }
+        });
     }
 
-    // 좋아요 개수 보이기
+    // 하트 개수 보이기
     const count = document.getElementById("count")
-    count.innerText = `좋아요 ${response.like.length}개`
+    count.innerText = `좋아요 ${post.like.length}개`
 
     // 별점 보이기
-    const exist_post = await getPost(postId);
-
-    for (let i = 1; i <= exist_post.star; i++) {
-        document.getElementById(`rating${i}`).checked = true;
+    for (let i = 1; i <= post.star; i++) {
+        document.getElementById(`rating${i}`).checked = true
     }
 
     await loadPosts(postId);
