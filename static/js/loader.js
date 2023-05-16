@@ -77,71 +77,24 @@ function postList(posts, post_list) {
         newCardStar.setAttribute("id", "star")
         newCard.appendChild(newCardStar)
 
-        const newCardinputStar1 = document.createElement("input")
-        newCardinputStar1.setAttribute("class", "rate_radio")
-        newCardinputStar1.setAttribute("type", "checkbox")
-        newCardinputStar1.setAttribute("value", "1")
-        newCardinputStar1.setAttribute("id", "rating1")
-        newCardinputStar1.setAttribute("disabled", "")
-        newCardStar.appendChild(newCardinputStar1)
-
-        const newCardlabel1 = document.createElement("label")
-        newCardlabel1.setAttribute("for", "rating1")
-        newCardStar.appendChild(newCardlabel1)
-
-        const newCardinputStar2 = document.createElement("input")
-        newCardinputStar2.setAttribute("class", "rate_radio")
-        newCardinputStar2.setAttribute("type", "checkbox")
-        newCardinputStar2.setAttribute("value", "2")
-        newCardinputStar2.setAttribute("id", "rating2")
-        newCardinputStar2.setAttribute("disabled", "")
-        newCardStar.appendChild(newCardinputStar2)
-
-        const newCardlabel2 = document.createElement("label")
-        newCardlabel2.setAttribute("for", "rating2")
-        newCardStar.appendChild(newCardlabel2)
-
-        const newCardinputStar3 = document.createElement("input")
-        newCardinputStar3.setAttribute("class", "rate_radio")
-        newCardinputStar3.setAttribute("type", "checkbox")
-        newCardinputStar3.setAttribute("value", "3")
-        newCardinputStar3.setAttribute("id", "rating3")
-        newCardinputStar3.setAttribute("disabled", "")
-        newCardStar.appendChild(newCardinputStar3)
-
-        const newCardlabel3 = document.createElement("label")
-        newCardlabel3.setAttribute("for", "rating3")
-        newCardStar.appendChild(newCardlabel3)
-
-        const newCardinputStar4 = document.createElement("input")
-        newCardinputStar4.setAttribute("class", "rate_radio")
-        newCardinputStar4.setAttribute("type", "checkbox")
-        newCardinputStar4.setAttribute("value", "4")
-        newCardinputStar4.setAttribute("id", "rating4")
-        newCardinputStar4.setAttribute("disabled", "")
-        newCardStar.appendChild(newCardinputStar4)
-
-        const newCardlabel4 = document.createElement("label")
-        newCardlabel4.setAttribute("for", "rating4")
-        newCardStar.appendChild(newCardlabel4)
-
-        const newCardinputStar5 = document.createElement("input")
-        newCardinputStar5.setAttribute("class", "rate_radio")
-        newCardinputStar5.setAttribute("type", "checkbox")
-        newCardinputStar5.setAttribute("value", "5")
-        newCardinputStar5.setAttribute("id", "rating5")
-        newCardinputStar5.setAttribute("disabled", "")
-        newCardStar.appendChild(newCardinputStar5)
-
-        const newCardlabel5 = document.createElement("label")
-        newCardlabel5.setAttribute("for", "rating5")
-        newCardStar.appendChild(newCardlabel5)
+        for (let i = 1; i <= 5; i++) {
+            const newCardinputStar = document.createElement("input");
+            newCardinputStar.setAttribute("class", "rate_radio");
+            newCardinputStar.setAttribute("type", "checkbox");
+            newCardinputStar.setAttribute("value", `${i}`);
+            newCardinputStar.setAttribute("id", `rating${i}-${post.pk}`);
+            newCardinputStar.setAttribute("disabled", "");
+            newCardStar.appendChild(newCardinputStar);
+        
+            const newCardlabel = document.createElement("label");
+            newCardlabel.setAttribute("for", `rating${i}-${post.pk}`);
+            newCardStar.appendChild(newCardlabel);            
+        }
 
         //원래 별 띄우기
-        // for (let i = 1; i <= post.star; i++) {
-        //     document.getElementById(`rating${i}`).checked = true
-        //     console.log(`rating${i}`)
-        // }
+        for (let j = 1; j <= post.star; j++) {
+            document.getElementById(`rating${j}-${post.pk}`).checked = true
+        }
     });
 
 }
